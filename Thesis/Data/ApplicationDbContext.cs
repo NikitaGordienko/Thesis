@@ -13,6 +13,7 @@ namespace Thesis.Data
         public DbSet<Models.Object> Objects { get; set; }
         public DbSet<UserObject> UserObjects { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<SuggestedInfo> SuggestedInfo { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
