@@ -1,5 +1,36 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Thesis.Models.SigninModel;
 @{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Авторизация";
 }
+
+<form method="post" asp-controller="Auth" asp-action="Signin" class="auth-form">
+    <div class="auth-form-logo">
+        <a href="~/Home/Index" title="Главная"></a>
+    </div>
+    <div asp-validation-summary="All"></div>
+
+    <div class="auth-form-field auth-login">
+        <div class="auth-form-label">Логин</div>
+        <input type="text" asp-for="Login">
+    </div>
+    <div class="auth-form-field auth-password">
+        <div class="auth-form-label">Пароль</div>
+        <input type="password" asp-for="Password">
+    </div>
+    <div class="auth-remember-wrap">
+        <div class="auth-remember">
+            <input type="checkbox" asp-for="RememberMe">
+            <span class="auth-remember-check"></span>
+        </div>
+        <div class="auth-remember-label">Запомнить меня?</div>
+    </div>
+    <div class="auth-form-submit">
+        <input type="submit" class="auth-submit-button" value="Войти">
+    </div>
+
+    <div class="auth-link">
+        <a href="~/Auth/Signup">Регистрация</a>
+    </div>
+</form>
