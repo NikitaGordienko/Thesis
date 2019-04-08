@@ -1,12 +1,19 @@
 $(document).ready(function(){
 
+    $('.filter-item-option-checkbox').click(function () {
+        $(this).children('.filter-item-option-check').toggleClass('checked');
+        var checkbox = $(this).children('input[type=checkbox]');
+        checkbox.prop("checked", !checkbox.prop("checked"));
+    });
+
+
     $('.header-auth-profile').click(function(){
         $('.header-auth-profile-menu').toggleClass('active');
     });
 
 
-    $('.filter-item-option-checkbox').click(function(){
-        $(this).children('.filter-item-option-check').toggleClass('checked');
+    $('.auth-remember').click(function(){
+        $(this).children('.auth-remember-check').toggleClass('checked');
         var checkbox = $(this).children('input[type=checkbox]');
         checkbox.prop("checked", !checkbox.prop("checked"));
     });
@@ -110,4 +117,9 @@ $(document).ready(function(){
 
     /* /Radio в добавлени площадки */
 
+
+
+    /* Регистрация */
+    $('.field-validation-error').parent('.auth-form-field').find('.auth-form-label').addClass("validation-error");
+    /* /Регистрация */
 });
