@@ -45,7 +45,7 @@
                             </li>
                             <li class="header-auth-profile-menu-item">
                                 <form method="post" asp-controller="Auth" asp-action="Logout" class="logout-form">
-                                    <input type="submit" value="Выйти"/>
+                                    <input type="submit" value="Выйти" />
                                 </form>
                             </li>
                         </ul>
@@ -59,26 +59,11 @@
                 }
             </div>
             <!-- /Разделение в зависимости от роли пользователя-->
-
             @*TODO: добавить кнопку админской панели*@
         </div>
     </header>
 
     @RenderBody()
-
-    <footer class="footer">
-        <div class="container">
-            <ul class="footer-menu">
-                <li class="footer-menu-item">
-                    <a href="#">О проекте</a>
-                </li>
-                <li class="footer-menu-item">
-                    <a href="#">Условия использования</a>
-                </li>
-            </ul>
-            <div class="footer-year">2019</div>
-        </div>
-    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/script.js"></script>

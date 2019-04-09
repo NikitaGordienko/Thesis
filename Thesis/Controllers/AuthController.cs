@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Thesis.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace Thesis.Controllers
 {
@@ -25,10 +25,26 @@ namespace Thesis.Controllers
             this.signinManager = signinManager ?? throw new ArgumentNullException(nameof(signinManager));
         }
 
+
+        private async Task<User> GetCurrentUserAsync()
+        {
+            return await userManager.GetUserAsync(User);
+        }
+
+
         [HttpGet]
         public ActionResult Signup()
         {
-            return View();
+
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Profile", "Auth");
+            }
+            else
+            {
+                return View();
+            }
+           
         }
 
         
@@ -114,11 +130,20 @@ namespace Thesis.Controllers
 
         }
 
-
+        [Authorize]
         [HttpGet]
         public ActionResult Profile()
         {
             return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Logout()
+        {
+            await signinManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
