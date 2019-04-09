@@ -259,6 +259,15 @@ header.header.blurry {
 .header-auth-profile-menu-item:last-child {
     border-bottom: none;
 }
+
+.logout-form input {
+    font-weight: 900;
+    font-size: 18px;
+    border: none;
+    background: none;
+    color: #666;
+    cursor: pointer;
+}
 /* /Header */
 
 /* Footer */

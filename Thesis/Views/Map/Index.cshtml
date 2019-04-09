@@ -1,5 +1,107 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Thesis.Data;
+@inject ApplicationDbContext _context;
+@*model*@
+
 @{
+    Layout = "_LayoutPartial";
+    ViewData["Title"] = "Карта";
 }
+
+
+<main class="map">
+
+    <!-- Метка на карте с информацией по площадке (подгрузка AJAX?) -->
+    <div class="pin">
+        <div class="object-info-wrap">
+            <div class="object-info">
+                <div class="object-info-top">
+                    <div class="object-info-photo">
+                        <img src="~/images/object.jpg" alt="">
+                    </div>
+                    <div class="object-info-address-wrap">
+                        <div class="object-info-address" title="">ул. 26 Бакинских Комиссаров, 3к4</div>
+                        <div class="object-info-district">Теплый стан</div>
+                    </div>
+                </div>
+                <div class="object-info-props">
+                    <div class="object-info-type">Для игровых видов спорта</div>
+                    <div class="object-info-terrain">Покрытие: <span>асфальт</span></div>
+                    <div class="object-info-light">Освещение: <span>есть</span></div>
+                </div>
+                <div class="object-info-events-link">События на спортивном объекте</div>
+            </div>
+        </div>
+    </div>
+    <!-- /Метка на карте с информацией по площадке (подгрузка AJAX?) -->
+
+    <div class="object-events hidden">
+        <div class="object-events-header">Ближайшие события на площадке</div>
+        <div class="object-events-list">
+            <div class="object-events-item">
+                <div class="object-event-top clearfix">
+                    <div class="object-event-creator">
+                        <img src="~/images/man_icon.png" alt="">
+                    </div>
+                    <div class="object-event-datetime">
+                        <div class="object-event-date">01.01.2019</div>
+                        <div class="object-event-time">13:00 - 15:00</div>
+                    </div>
+                </div>
+                <div class="object-event-descr">
+                    Играем в футбол (6-8 чел). Нужны соперники, примерно столько же.
+                </div>
+            </div>
+            <div class="object-events-item">
+                <div class="object-event-top clearfix">
+                    <div class="object-event-creator">
+                        <img src="~/images/man_icon.png" alt="">
+                    </div>
+                    <div class="object-event-datetime">
+                        <div class="object-event-date">02.01.2019</div>
+                        <div class="object-event-time">16:00 - 17:00</div>
+                    </div>
+                </div>
+                <div class="object-event-descr">
+                    Играем в футбол (6-8 чел). Нужны соперники, примерно столько же. Играем в футбол (6-8 чел). Нужны соперники, примерно столько же.
+                </div>
+            </div>
+        </div>
+        <div class="object-events-add">
+            Добавить событие
+        </div>
+    </div>
+</main>
+
+<!-- Окно создания события (PartialView?)-->
+<div class="create-event-wrap-table ">
+    <div class="create-event-wrap-cell">
+        <form class="create-event-form">
+            <div class="create-event-form-close"></div>
+            <div class="create-event-title">Создание события</div>
+            <div class="create-event-address">Адрес: ул. 26 Бакинских комиссаров, 3к4</div>
+            <div class="create-event-datetime">
+                <div class="create-event-date">
+                    <div class="create-event-input-label">Дата</div>
+                    <input type="text" class="create-event-input-date">
+                </div>
+                <div class="create-event-timefrom">
+                    <div class="create-event-input-label">С</div>
+                    <input type="text" class="create-event-input-timefrom">
+                </div>
+                <div class="create-event-timeto">
+                    <div class="create-event-input-label">До</div>
+                    <input type="text" class="create-event-input-timeto">
+                </div>
+            </div>
+            <div class="create-event-descr">
+                <div class="create-event-input-label">Описание</div>
+                <textarea class="create-event-input-descr" rows="3"></textarea>
+            </div>
+            <div class="create-event-submit">
+                <input type="submit" class="create-event-submit-button" value="Создать">
+            </div>
+        </form>
+    </div>
+</div>
+<!-- /Окно создания события -->
