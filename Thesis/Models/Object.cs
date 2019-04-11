@@ -9,13 +9,20 @@ namespace Thesis.Models
 {
     public class Object
     {
-        public string Id { get; set; }    
+        public string Id { get; set; }  
+        
         public string Address { get; set; }
-        public string Photo { get; set; }
+
+        public string PhotoId { get; set; }
+        public FileModel Photo { get; set; }
+
         public string District { get; set; }
+
         public string Type { get; set; }
+
         public string Terrain { get; set; }
-        public bool Light { get; set; } // изменить на string?
+
+        public bool Light { get; set; } 
 
         [ForeignKey("Id")]
         public List<Event> Events { get; set; }

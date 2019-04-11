@@ -672,7 +672,7 @@ footer.footer.blurry {
     width: 128px;
     height: 128px;
     border-radius: 50%;
-    border: 2px solid #666;
+    border: 0px solid #666;
 }
 
 .profile-photo-upload {
@@ -732,8 +732,10 @@ footer.footer.blurry {
     color: #000;
     background: #3AFF8C;
     border-radius: 7px;
+    border: none;
     padding: 11px 40px;
     transition: 0.2s;
+    cursor: pointer;
 }
 
 .profile-save-button:hover {

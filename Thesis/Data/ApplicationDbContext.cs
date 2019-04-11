@@ -14,6 +14,7 @@ namespace Thesis.Data
         public DbSet<UserObject> UserObjects { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<SuggestedInfo> SuggestedInfo { get; set; }
+        public DbSet<FileModel> Files { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
