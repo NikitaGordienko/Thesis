@@ -19,6 +19,25 @@ $(document).ready(function(){
     });
 
 
+    // превью загруженного аватара
+    function previewAvatar(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#profile-avatar-preview').attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#upload-avatar-input").change(function () {
+        previewAvatar(this);
+    });
+
+
     // Скрываем пункты, если их больше 4
     $('.filter-item-options').each(function(){
         if ($(this).children('.filter-item-option').length <= 4) {

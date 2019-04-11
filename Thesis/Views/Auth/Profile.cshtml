@@ -1,6 +1,64 @@
-﻿
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Thesis.Models.User;
+@inject Thesis.Data.ApplicationDbContext _context
+
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Профиль";
 }
 
+<main class="profile">
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-title">Настройки профиля</div>
+            <div class="profile-descr">Вы можете изменить свои данные здесь</div>
+        </div>
+        <form method="post" asp-controller="Auth" asp-action="EditProfile" enctype="multipart/form-data">
+            <div class="profile-fields clearfix">
+                <div class="profile-left">
+                    <div class="profile-field profile-name">
+                        <div class="profile-field-label">Имя</div>
+                        <input type="text" asp-for="Name" value="@Model.Name">
+                    </div>
+                    <div class="profile-field profile-surname">
+                        <div class="profile-field-label">Фамилия</div>
+                        <input type="text" asp-for="Surname" value="@Model.Surname">
+                    </div>
+                    <div class="profile-field profile-email">
+                        <div class="profile-field-label">E-mail <span class="profile-field-info"></span></div>
+                        <input type="text" asp-for="Email" value="@Model.Email">
+                        <div class="profile-field-hidden-info"></div> <!-- всплывающая подсказка -->
+                    </div>
+                </div>
+                <div class="profile-right">
+                    <div class="profile-field profile-photo">
+                        <div class="profile-field-label">Фото профиля</div>
+                        <div class="profile-photo-wrap">
+                            <div class="profile-photo-image" >
+                                <img src="@Model.Avatar.Path" id="profile-avatar-preview">
+                            </div>
+                            <div class="profile-photo-upload">
+                                <div class="profile-photo-upload-button">Загрузить другое фото</div>
+                                <input type="file" name="uploadedAvatar" class="profile-photo-input" id="upload-avatar-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-field profile-address">
+                        <div class="profile-field-label">Предпочитаемое местоположение <span class="profile-field-info"></span></div>
+                        <div class="profile-map-input">
+                            <input type="text" asp-for="PreferredAddress" value="@Model.PreferredAddress">
+                            <div class="profile-map-input-button">
+                                <!-- открывать карту по клику -->
+                                <a href="#"></a>
+                            </div>
+                        </div>
+                        <div class="profile-field-hidden-info"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-save">
+                <input type="submit" name="name" value="Сохранить изменения" class="profile-save-button" />
+            </div>
+        </form>
+    </div>
+</main>
