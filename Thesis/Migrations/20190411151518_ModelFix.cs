@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Thesis.Migrations
 {
-    public partial class Init : Migration
+    public partial class ModelFix : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,6 +20,93 @@ namespace Thesis.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Districts",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Districts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Files",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Path = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Files", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ObjectTypes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ObjectTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SuggestedInfo",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Address = table.Column<string>(nullable: true),
+                    Photo = table.Column<string>(nullable: true),
+                    District = table.Column<string>(nullable: true),
+                    Type = table.Column<string>(nullable: true),
+                    Terrain = table.Column<string>(nullable: true),
+                    Light = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SuggestedInfo", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Terrains",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Terrains", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    RoleId = table.Column<string>(nullable: false),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -44,11 +131,18 @@ namespace Thesis.Migrations
                     Discriminator = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Surname = table.Column<string>(nullable: true),
-                    PreferredAddress = table.Column<string>(nullable: true)
+                    PreferredAddress = table.Column<string>(nullable: true),
+                    AvatarId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Files_AvatarId",
+                        column: x => x.AvatarId,
+                        principalTable: "Files",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,53 +151,39 @@ namespace Thesis.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     Address = table.Column<string>(nullable: true),
-                    Photo = table.Column<string>(nullable: true),
-                    District = table.Column<string>(nullable: true),
-                    Type = table.Column<string>(nullable: true),
-                    Terrain = table.Column<string>(nullable: true),
+                    PhotoId = table.Column<string>(nullable: true),
+                    DistrictId = table.Column<string>(nullable: true),
+                    TypeId = table.Column<string>(nullable: true),
+                    TerrainId = table.Column<string>(nullable: true),
                     Light = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Objects", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SuggestedInfo",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    Address = table.Column<string>(nullable: true),
-                    Photo = table.Column<string>(nullable: true),
-                    District = table.Column<string>(nullable: true),
-                    Type = table.Column<string>(nullable: true),
-                    Terrain = table.Column<string>(nullable: true),
-                    Light = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SuggestedInfo", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetRoleClaims",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    RoleId = table.Column<string>(nullable: false),
-                    ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
+                        name: "FK_Objects_Districts_DistrictId",
+                        column: x => x.DistrictId,
+                        principalTable: "Districts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Objects_Files_PhotoId",
+                        column: x => x.PhotoId,
+                        principalTable: "Files",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Objects_Terrains_TerrainId",
+                        column: x => x.TerrainId,
+                        principalTable: "Terrains",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Objects_ObjectTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "ObjectTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -285,6 +365,11 @@ namespace Thesis.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_AvatarId",
+                table: "AspNetUsers",
+                column: "AvatarId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Events_ObjectId",
                 table: "Events",
                 column: "ObjectId");
@@ -293,6 +378,26 @@ namespace Thesis.Migrations
                 name: "IX_Events_UserId",
                 table: "Events",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Objects_DistrictId",
+                table: "Objects",
+                column: "DistrictId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Objects_PhotoId",
+                table: "Objects",
+                column: "PhotoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Objects_TerrainId",
+                table: "Objects",
+                column: "TerrainId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Objects_TypeId",
+                table: "Objects",
+                column: "TypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserObjects_ObjectId",
@@ -334,6 +439,18 @@ namespace Thesis.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Districts");
+
+            migrationBuilder.DropTable(
+                name: "Terrains");
+
+            migrationBuilder.DropTable(
+                name: "ObjectTypes");
+
+            migrationBuilder.DropTable(
+                name: "Files");
         }
     }
 }
