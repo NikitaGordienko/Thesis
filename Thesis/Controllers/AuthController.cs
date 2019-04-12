@@ -68,6 +68,7 @@ namespace Thesis.Controllers
                     Name = signupModel.Name,
                     Surname = signupModel.Surname,
                     Email = signupModel.Email, // TODO: проверка на уникальность email
+                    Avatar = context.Files.First(t => t.Name == "user_default.png"),
                     PreferredAddress = "123", // null по умолчанию?
                 };
 

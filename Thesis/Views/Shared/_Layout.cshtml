@@ -39,7 +39,7 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <div class="header-auth-profile">
-                        <img src="~/images/man_icon.png" alt="">
+                        <img src="@userManager.FindByNameAsync(User.Identity.Name).Result.Avatar.Path" alt="" style="border-radius: 50%">
                         <ul class="header-auth-profile-menu">
                             <li class="header-auth-profile-menu-item">
                                 <a asp-controller="Auth" asp-action="Profile">Профиль</a>
