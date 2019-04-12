@@ -1,7 +1,8 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using Thesis.Data;
-@inject ApplicationDbContext _context;
-@*model*@
+@*лист, так как передается несколько объектов*@
+@model List<Thesis.Models.Object>
+@inject ApplicationDbContext _context
 
 @{
     Layout = "_LayoutPartial";
