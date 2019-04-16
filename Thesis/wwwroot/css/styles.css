@@ -961,7 +961,7 @@ main.auth {
 
 
 /* Карта */
-main.map {
+/*main.map {
     position: relative;
     height: calc(100% - 50px);
     background: url(/images/2gis_map.png);
@@ -978,6 +978,22 @@ main.map {
     background-size: 100%;
     cursor: pointer;
 }
+*/
+
+#map {
+    height: calc(100% - 50px);
+}
+
+#map .leaflet-map-pane {
+    filter: grayscale(100%);
+}
+
+#map .leaflet-map-pane img {
+    max-width: none;
+    max-height: none;
+}
+
+
 
 
 .object-events {
@@ -1027,6 +1043,7 @@ main.map {
 
 .object-event-creator img {
     max-height: 100%;
+    border-radius: 50%;
 }
 
 .object-event-datetime {
@@ -1272,6 +1289,21 @@ main.map {
     margin-bottom: 20px;
 }
 
+.create-event-date {
+    position: relative;
+}
+
+.create-event-date:after {
+    position: absolute;
+    right: 13px;
+    top: 39px;
+    width: 28px;
+    height: 28px;
+    background-image: url(/images/calendar.png);
+    background-size: 100%;
+    content: "";
+}
+
 .create-event-input-label {
     margin-bottom: 7px;
 }
@@ -1280,7 +1312,7 @@ main.map {
     height: 50px;
     border: 2px solid #3AFF8C;
     border-radius: 7px;
-    padding: 0 10px;
+    padding: 0 7px;
     font-weight: 600;
 }
 
@@ -1290,6 +1322,7 @@ main.map {
 
 .create-event-input-timefrom, .create-event-input-timeto {
     width: 90px;
+    text-align: center;
 }
 
 textarea.create-event-input-descr {
@@ -1316,6 +1349,10 @@ textarea.create-event-input-descr {
     border: 0;
     border-radius: 7px;
     cursor: pointer;
+}
+
+#createEvent .input-validation-error {
+    border-color: #ff3355;
 }
 /* /Создание осбытия */
 
