@@ -42,16 +42,26 @@ namespace Thesis.Controllers
                 item.Terrain = context.Terrains.First(e => e.Id == item.TerrainId);
             }
 
-            return View(objects);
-            //return View();
+            //return View(objects);
+            return View();
         }
 
 
-        //[HttpGet]
-        //public ActionResult GetMarkers()
-        //{
+        [HttpGet]
+        public ActionResult GetMarkers()
+        {
+            List<string> coordinates = new List<string>(); 
+            var objects = context.Objects.ToList();
+            foreach (var item in objects)
+            {
+                coordinates.Add(item.Address);
+            }
 
-        //}
+            return Json(new
+            {
+                addresses = coordinates
+            });
+        }
 
 
         [HttpPost]

@@ -269,40 +269,4 @@ $(document).ready(function(){
     /* /Создание события */
 
 
-
-    /* Карта */
-
-    GenerateMap();
-
-    function GenerateMap() {
-        var map;
-        DG.then(function () {
-            map = DG.map('map', {
-                center: [55.741216, 37.620921], // центр Москвы
-                zoom: 11, // оптимальный зум для отображения всей Москвы при загрузке
-                zoomControl: false,
-                fullscreenControl: false
-            });
-        });
-    }
-
-    // функция для отображения маркеров 
-    function GetMarkers() {
-
-        if ($('#map').length > 0) {
-            
-            $('#getmarker').click(function () {
-                $.get("/Map/GetMarkers", function (result) {
-                    //
-                });
-            });
-        }
-
-    }
-
-
-
-    /* /Карта */
-
-
 });
