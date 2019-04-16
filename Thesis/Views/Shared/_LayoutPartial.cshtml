@@ -9,8 +9,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="~/css/styles.css">
+    <link rel="stylesheet" href="~/css/jquery-ui.min.css" />
     <title>@ViewData["Title"]</title>
 </head>
 <body>
@@ -29,7 +29,8 @@
                 <li class="header-menu-item">
                     <a asp-controller="Map" asp-action="Index">Карта</a>
                 </li>
-                <li class="header-menu-item active">
+                <!-- TODO: переключение active -->
+                <li class="header-menu-item">
                     <a asp-controller="Filter" asp-action="Index">Поиск</a>
                 </li>
             </ul>
@@ -66,7 +67,12 @@
     @RenderBody()
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/script.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/jquery.mask.js"></script>
+    <script src="~/js/jquery-ui.min.js"></script>
+    <script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
+    <script src="~/js/script.js"></script> <!-- скрипт в конце, так как параметры карты в скрипте -->
 
 </body>
 </html>

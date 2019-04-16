@@ -1,5 +1,6 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using Thesis.Data;
+@using Thesis.Models;
 @*лист, так как передается несколько объектов*@
 @model List<Thesis.Models.Object>
 @inject ApplicationDbContext _context
@@ -10,8 +11,9 @@
 }
 
 
-<main class="map">
-
+<main id="map">
+    
+    <div id="getmarker" style="width: 50px; height: 50px; background-color: yellowgreen; position: relative; z-index: 50000"></div>
     <!-- Метка на карте с информацией по площадке (подгрузка AJAX?) -->
     <div class="pin">
         <div class="object-info-wrap">
@@ -36,9 +38,10 @@
     </div>
     <!-- /Метка на карте с информацией по площадке (подгрузка AJAX?) -->
 
-    <div class="object-events hidden">
+    <div class="object-events hidden" id="239b0abe-29ba-4597-bb89-4bc8c9b4432e">
         <div class="object-events-header">Ближайшие события на площадке</div>
         <div class="object-events-list">
+            <!--
             <div class="object-events-item">
                 <div class="object-event-top clearfix">
                     <div class="object-event-creator">
@@ -53,56 +56,21 @@
                     Играем в футбол (6-8 чел). Нужны соперники, примерно столько же.
                 </div>
             </div>
-            <div class="object-events-item">
-                <div class="object-event-top clearfix">
-                    <div class="object-event-creator">
-                        <img src="~/images/man_icon.png" alt="">
-                    </div>
-                    <div class="object-event-datetime">
-                        <div class="object-event-date">02.01.2019</div>
-                        <div class="object-event-time">16:00 - 17:00</div>
-                    </div>
-                </div>
-                <div class="object-event-descr">
-                    Играем в футбол (6-8 чел). Нужны соперники, примерно столько же. Играем в футбол (6-8 чел). Нужны соперники, примерно столько же.
-                </div>
+            -->
+        </div>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div class="object-events-add">
+                Добавить событие
             </div>
-        </div>
-        <div class="object-events-add">
-            Добавить событие
-        </div>
+        }
     </div>
 </main>
 
-<!-- Окно создания события (PartialView?)-->
+<!-- Окно создания события (PartialView)-->
 <div class="create-event-wrap-table ">
-    <div class="create-event-wrap-cell">
-        <form class="create-event-form">
-            <div class="create-event-form-close"></div>
-            <div class="create-event-title">Создание события</div>
-            <div class="create-event-address">Адрес: ул. 26 Бакинских комиссаров, 3к4</div>
-            <div class="create-event-datetime">
-                <div class="create-event-date">
-                    <div class="create-event-input-label">Дата</div>
-                    <input type="text" class="create-event-input-date">
-                </div>
-                <div class="create-event-timefrom">
-                    <div class="create-event-input-label">С</div>
-                    <input type="text" class="create-event-input-timefrom">
-                </div>
-                <div class="create-event-timeto">
-                    <div class="create-event-input-label">До</div>
-                    <input type="text" class="create-event-input-timeto">
-                </div>
-            </div>
-            <div class="create-event-descr">
-                <div class="create-event-input-label">Описание</div>
-                <textarea class="create-event-input-descr" rows="3"></textarea>
-            </div>
-            <div class="create-event-submit">
-                <input type="submit" class="create-event-submit-button" value="Создать">
-            </div>
-        </form>
-    </div>
+    @{
+        await Html.RenderPartialAsync("CreateEvent", new CreateEventModel());
+    };
 </div>
 <!-- /Окно создания события -->
