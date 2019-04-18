@@ -967,8 +967,8 @@ main.auth {
     background: url(/images/2gis_map.png);
     background-size: cover;
 }
-
-.map .pin {
+*/
+.pin {
     position: absolute;
     top: 510px;
     left: 510px;
@@ -978,18 +978,18 @@ main.auth {
     background-size: 100%;
     cursor: pointer;
 }
-*/
+
 
 #map {
     height: calc(100% - 50px);
 }
 
-#map .leaflet-map-pane {
+/*#map .leaflet-map-pane img {
     filter: grayscale(100%);
-}
+}*/
 
 #map .leaflet-map-pane img {
-    max-width: none;
+    /*max-width: none;*/
     max-height: none;
 }
 
@@ -1085,6 +1085,31 @@ main.auth {
 }
 
 
+.leaflet-popup {
+    left: 15px !important;
+}
+
+.leaflet-popup-tip-container_svg {
+    display: none;
+}
+
+.leaflet-popup-close-button {
+    display: none;
+}
+
+.leaflet-popup-content-wrapper {
+    max-width: none !important;
+    max-height: none !important;
+    width: auto !important;
+    background-color: #fff !important;
+    border-radius: 10px !important;
+    box-shadow: 5px 5px 20px rgba(0,0,0,0.4) !important;
+}
+
+.leaflet-popup-content {
+    margin: 0 !important;
+}
+
 
 .object-info-wrap {
     position: relative;
@@ -1092,14 +1117,15 @@ main.auth {
 
 .object-info {
     display: block;
-    position: absolute;
+    /*position: absolute;*/
     left: 50px;
     bottom: 50px;
     width: 450px;
     background: #fff;
+    color: #666;
     padding: 25px;
-    border-radius: 10px;
-    box-shadow: 5px 5px 20px rgba(0,0,0,0.4);
+    /*border-radius: 10px;
+    box-shadow: 5px 5px 20px rgba(0,0,0,0.4);*/
     cursor: auto;
 }
 
@@ -1119,7 +1145,7 @@ main.auth {
     border: 1px solid #666;
 }
 
-.object-info-address-wrap {
+.object-info-type-wrap {
     display: flex;
     flex-direction: column;
     height: 125px;
@@ -1127,7 +1153,7 @@ main.auth {
     padding: 15px 0 15px 20px;
 }
 
-.object-info-address {
+.object-info-type {
     font-size: 24px;
     font-weight: 600;
     max-height: 56px;
@@ -1158,13 +1184,10 @@ main.auth {
 
 }
 
-.object-info-type {
-    margin-bottom: 15px;
-}
-
 .object-info-terrain {
     position: relative;
     padding-left: 25px;
+    /*margin-top: 15px;*/
     margin-bottom: 15px;
 }
 
@@ -1197,6 +1220,10 @@ main.auth {
 
 .object-info-terrain span, .object-info-light span {
     font-weight: 600;
+}
+
+.object-info-events-link-wrap {
+    text-align: center;
 }
 
 .object-info-events-link {

@@ -33,14 +33,14 @@ namespace Thesis.Controllers
         public ActionResult Index()
         {
 
-            var objects = context.Objects.ToList();
-            foreach (var item in objects)
-            {
-                item.Photo = context.Files.First(t => t.Id == item.PhotoId);
-                item.District = context.Districts.First(i => i.Id == item.DistrictId);
-                item.Type = context.ObjectTypes.First(j => j.Id == item.TypeId);
-                item.Terrain = context.Terrains.First(e => e.Id == item.TerrainId);
-            }
+            //var objects = context.Objects.ToList();
+            //foreach (var item in objects)
+            //{
+            //    item.Photo = context.Files.First(t => t.Id == item.PhotoId);
+            //    item.District = context.Districts.First(i => i.Id == item.DistrictId);
+            //    item.Type = context.ObjectTypes.First(j => j.Id == item.TypeId);
+            //    item.Terrain = context.Terrains.First(e => e.Id == item.TerrainId);
+            //}
 
             //return View(objects);
             return View();
@@ -50,19 +50,46 @@ namespace Thesis.Controllers
         [HttpGet]
         public ActionResult GetMarkers()
         {
-            List<string> coordinates = new List<string>(); 
+            //Пара - id и координаты объекта
+            List<(string id, string coordinates)> info = new List<(string, string)>();
             var objects = context.Objects.ToList();
             foreach (var item in objects)
             {
-                coordinates.Add(item.Address);
+                (string id, string coordinates) tupleItem = (item.Id, item.Address);
+                info.Add(tupleItem);
             }
 
-            return Json(new
-            {
-                addresses = coordinates
+            return Json(new { info });
+        }
+
+        // AJAX-получение информации при клике на маркер площадки
+        [HttpGet]
+        public ActionResult GetObjectInfo(string id) // должен быть именно id, иначе не сработает
+        {
+
+            var obj = context.Objects.First(t => t.Id == id);
+            var objPhoto = context.Files.First(t => t.Id == obj.PhotoId);
+            var objDistrict = context.Districts.First(t => t.Id == obj.DistrictId);
+            var objType = context.ObjectTypes.First(t => t.Id == obj.TypeId);
+            var objTerrain = context.Terrains.First(t => t.Id == obj.TerrainId);
+
+            return Json(new {
+                photo = objPhoto.Path,
+                district = objDistrict.Name,
+                type = objType.Name,
+                terrain = objTerrain.Name,
+                light = obj.Light
             });
         }
 
+        [HttpGet]
+        public ActionResult GetObjectEvents(string id)
+        {
+            return Json(new
+            {
+
+            });
+        }
 
         [HttpPost]
         public ActionResult CreateEvent([FromBody]JObject createEventModel)

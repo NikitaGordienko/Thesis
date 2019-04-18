@@ -9,8 +9,9 @@ namespace Thesis.Models
 {
     public class Object
     {
-        public string Id { get; set; }  
-        
+        public string Id { get; set; }         
+
+        // Координаты
         public string Address { get; set; }
 
         public string PhotoId { get; set; }

@@ -82,9 +82,9 @@ $(document).ready(function(){
     });
 
 
-    $('.object-info-events-link').click(function(){
-        $('.object-events').toggleClass('hidden');
-    });
+    //$('.object-info-events-link').click(function(){
+    //    $('.object-events').toggleClass('hidden');
+    //});
 
 
     $('.search-result-question').click(function(){
