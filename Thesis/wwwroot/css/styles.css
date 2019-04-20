@@ -111,7 +111,11 @@ input {
     outline: 0;
 }
 
-main.blurry {
+/*main.blurry {
+    filter: blur(5px);
+}*/
+
+.blurry {
     filter: blur(5px);
 }
 
@@ -135,9 +139,9 @@ header.header {
     box-shadow: 0 0px 15px rgba(0,0,0,0.25);
 }
 
-header.header.blurry {
+/*header.header.blurry {
     filter: blur(5px);
-}
+}*/
 
 .container {
     position: relative;
@@ -998,15 +1002,28 @@ main.auth {
 
 .object-events {
     display: block;
+    z-index: 999;
     float: left;
     position: absolute;
     left: 0;
     width: 400px;
-    height: 100%;
+    height: calc(100% - 50px);
+    /*max-height: calc(100% - 50px);*/
+    overflow-y: scroll;
+    overflow-x: hidden;
     background: #fff;
     padding: 0 25px;
+    /*transition: 0.3s;*/
+}
+
+.object-events:not(.hidden) {
     transition: 0.3s;
 }
+
+.object-events.blurry {
+    transition: 0s;
+}
+
 
 .object-events.hidden {
     left: -400px;
@@ -1075,6 +1092,7 @@ main.auth {
     font-weight: 600;
     text-align: center;
     border-radius: 7px;
+    margin-bottom: 20px;
     cursor: pointer;
     transition: 0.2s;
 }
@@ -1094,7 +1112,7 @@ main.auth {
 }
 
 .leaflet-popup-close-button {
-    display: none;
+    /*display: none;*/
 }
 
 .leaflet-popup-content-wrapper {
@@ -1143,6 +1161,10 @@ main.auth {
     width: 125px;
     height: 100%;
     border: 1px solid #666;
+}
+
+.object-info-photo img {
+    height: 100%;
 }
 
 .object-info-type-wrap {
@@ -1609,3 +1631,22 @@ textarea.create-event-input-descr {
     border-radius: 7px;
     cursor: pointer;
 }
+/* /Добавление объекта */
+
+
+/* Кастомизация скролла */
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
