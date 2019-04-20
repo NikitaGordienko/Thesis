@@ -32,17 +32,6 @@ namespace Thesis.Controllers
 
         public ActionResult Index()
         {
-
-            //var objects = context.Objects.ToList();
-            //foreach (var item in objects)
-            //{
-            //    item.Photo = context.Files.First(t => t.Id == item.PhotoId);
-            //    item.District = context.Districts.First(i => i.Id == item.DistrictId);
-            //    item.Type = context.ObjectTypes.First(j => j.Id == item.TypeId);
-            //    item.Terrain = context.Terrains.First(e => e.Id == item.TerrainId);
-            //}
-
-            //return View(objects);
             return View();
         }
 
@@ -82,14 +71,33 @@ namespace Thesis.Controllers
             });
         }
 
+
         [HttpGet]
         public ActionResult GetObjectEvents(string id)
         {
+
+            // TODO: сортировка по дате и убрать прошедшие ивенты
+            var _objEvents = 
+                (from Event in context.Events.ToList()
+                 where Event.ObjectId == id
+                 && Event.Date.Date >= DateTime.Now.Date
+                 select Event);
+            var objEvents = _objEvents.OrderBy(t => t.TimeStart);
+
+            foreach (var objEvent in objEvents)
+            {
+                objEvent.User = context.Users.First(t => t.Id == objEvent.UserId);
+                objEvent.User.Events = null; // необходимо обозначить null, иначе json передается с ошибкой
+                objEvent.User.Avatar = context.Files.First(t => t.Id == objEvent.User.AvatarId);
+
+            }
+
             return Json(new
             {
-
+                objEvents
             });
         }
+
 
         [HttpPost]
         public ActionResult CreateEvent([FromBody]JObject createEventModel)

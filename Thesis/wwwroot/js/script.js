@@ -77,16 +77,6 @@ $(document).ready(function(){
     });
 
 
-    $('.map .pin').click(function(){
-        //$(this).find('.object-info').toggleClass('hidden');
-    });
-
-
-    //$('.object-info-events-link').click(function(){
-    //    $('.object-events').toggleClass('hidden');
-    //});
-
-
     $('.search-result-question').click(function(){
         $('.add-object-wrap-table').addClass('active');
         $('header, main, footer').addClass('blurry');
@@ -135,11 +125,11 @@ $(document).ready(function(){
     /* Создание события */
 
     $('.object-events-add').click(function () {
-        var objectId = $(this).parents('.object-events').attr('id');
+        var objectId = $(this).parents('.object-events').data('objectid');
         $('#createEvent #ObjectId').val(objectId);
 
         $('.create-event-wrap-table').addClass('active');
-        $('header, main, footer').addClass('blurry');
+        $('header, main, footer, .object-events').addClass('blurry');
     });
 
 
@@ -244,7 +234,7 @@ $(document).ready(function(){
                             </div>
                          `;
                         $('.create-event-form-close').click();
-                        $('.object-events#' + result.objectId).not('.hidden').children('.object-events-list').append(htmlToAppend);
+                        $('.object-events').not('.hidden').children('.object-events-list').append(htmlToAppend);
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         console.log(xhr.status);
@@ -262,7 +252,7 @@ $(document).ready(function(){
 
     $('.create-event-form-close').click(function () {
         $('.create-event-wrap-table').removeClass('active');
-        $('header, main, footer').removeClass('blurry');
+        $('header, main, footer, .object-events').removeClass('blurry');
         $('#createEvent input, #createEvent textarea').removeClass('input-validation-error');
         $('#createEvent input, #createEvent textarea').not("#createEvent input[type=submit]").val("");
     });
