@@ -1,0 +1,34 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Thesis.Data;
+@model Thesis.Models.CreateEventModel
+@inject ApplicationDbContext context
+
+<div class="create-event-wrap-cell">
+    <form class="create-event-form" asp-controller="Map" asp-action="CreateEvent" id="createEvent">
+        <div class="create-event-form-close"></div>
+        <div class="create-event-title">Создание события</div>
+        <div class="create-event-address">*Адрес: insert address*</div>
+        <div class="create-event-datetime">
+            <div class="create-event-date">
+                <div class="create-event-input-label">Дата</div>
+                <input type="text" class="create-event-input-date" asp-for="Date" placeholder="@DateTime.Now.Date.ToShortDateString()" data-mask="00.00.0000" data-mask-clearifnotmatch="true" value="">
+            </div>
+            <div class="create-event-timefrom">
+                <div class="create-event-input-label">С</div>
+                <input type="text" class="create-event-input-timefrom" asp-for="TimeFrom" data-mask="00:00" data-mask-clearifnotmatch="true" value="">
+            </div>
+            <div class="create-event-timeto">
+                <div class="create-event-input-label">До</div>
+                <input type="text" class="create-event-input-timeto" asp-for="TimeTo" data-mask="00:00" data-mask-clearifnotmatch="true" value="">
+            </div>
+        </div>
+        <div class="create-event-descr">
+            <div class="create-event-input-label">Описание</div>
+            <textarea class="create-event-input-descr" rows="3" asp-for="Description"></textarea>
+        </div>
+        <div class="create-event-submit">
+            <input type="hidden" asp-for="ObjectId" value=""/>
+            <input type="submit" class="create-event-submit-button" value="Создать">
+        </div>
+    </form>
+</div>

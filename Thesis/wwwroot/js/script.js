@@ -77,27 +77,6 @@ $(document).ready(function(){
     });
 
 
-    $('.map .pin').click(function(){
-        //$(this).find('.object-info').toggleClass('hidden');
-    });
-
-
-    $('.object-info-events-link').click(function(){
-        $('.object-events').toggleClass('hidden');
-    });
-
-
-    $('.object-events-add').click(function(){
-        $('.create-event-wrap-table').addClass('active');
-        $('header, main, footer').addClass('blurry');
-    });
-
-    $('.create-event-form-close').click(function(){
-        $('.create-event-wrap-table').removeClass('active');
-        $('header, main, footer').removeClass('blurry');
-    });
-
-
     $('.search-result-question').click(function(){
         $('.add-object-wrap-table').addClass('active');
         $('header, main, footer').addClass('blurry');
@@ -141,4 +120,143 @@ $(document).ready(function(){
     /* Регистрация */
     $('.field-validation-error').parent('.auth-form-field').find('.auth-form-label').addClass("validation-error");
     /* /Регистрация */
+
+
+    /* Создание события */
+
+    $('.object-events-add').click(function () {
+        var objectId = $(this).parents('.object-events').data('objectid');
+        $('#createEvent #ObjectId').val(objectId);
+
+        $('.create-event-wrap-table').addClass('active');
+        $('header, main, footer, .object-events').addClass('blurry');
+    });
+
+
+    $('#createEvent #Date').datepicker({
+        firstDay: 1,
+        dateFormat: 'dd.mm.yy',
+        minDate: 0
+    });
+    
+    function DateParse(ee) {
+        var dateVal = ee.val();
+        var dateDay = dateVal.substr(0, 2);
+        var dateMonth = dateVal.substr(3, 2);
+        var dateYear = dateVal.substr(6, 4);
+        var dateParse = dateMonth + "." + dateDay + "." + dateYear;
+        return dateParse;
+    }
+
+    $('#TimeFrom, #TimeTo').focusout(function () {
+        if (IsValidTime($('#TimeFrom')) == "correct" && IsValidTime($('#TimeTo')) == "correct") {
+            CompareInsertedTime();
+        }
+    });
+
+    // проверка введенного времени на корректность
+    function IsValidTime(e) {
+        if (e.val() !== "") {
+            var hourVal = e.val().substr(0, 2);
+            var minVal = e.val().substr(3, 2);
+            if (hourVal > 23 || minVal > 59) {
+                e.val("");
+                return false;
+            }
+            else {
+                return "correct";
+            }
+        }
+    }
+
+    function CompareInsertedTime() {
+        var timeFrom = $('#TimeFrom');
+        var timeTo = $('#TimeTo');
+        var hourValFrom = timeFrom.val().substr(0, 2);
+        var minValFrom = timeFrom.val().substr(3, 2);
+        var hourValTo = timeTo.val().substr(0, 2);
+        var minValTo = timeTo.val().substr(3, 2);
+
+        if (hourValFrom > hourValTo) {
+            timeTo.val("");
+            return false;
+        }
+        if (hourValFrom == hourValTo) {
+            if (minValFrom > minValTo) {
+                timeTo.val("");
+                return false;
+            }
+        }
+    }
+
+    $('#createEvent').submit(function (e) {
+
+        //не отправлять форму (чтобы страница не перезагружалась)
+        e.preventDefault();
+
+        if ($('#createEvent .input-validation-error').length == 0) {
+
+            var eventDate = DateParse($('#Date'));
+            var eventTimeFrom = eventDate + ' ' + $('#TimeFrom').val() + ':00';
+            var eventTimeTo = eventDate + ' ' + $('#TimeTo').val() + ':00';
+            var model = {
+                //ObjectId: $('#createEvent').data('objectid'),
+                ObjectId: $('#ObjectId').val(),
+                Date: eventDate + ' 0:00:00',
+                TimeFrom: eventTimeFrom,
+                TimeTo: eventTimeTo,
+                Description: $('.create-event-input-descr').val()
+            };
+
+            var data = JSON.stringify(model);
+
+            $.ajax(
+                {
+                    url: "/Map/CreateEvent",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: data,
+                    success: function (result) {
+                        var htmlToAppend = `
+                            <div class="object-events-item">
+                                <div class="object-event-top clearfix">
+                                    <div class="object-event-creator">
+                                        <img src="` + result.avatar + `" alt="">
+                                    </div>
+                                    <div class="object-event-datetime">
+                                        <div class="object-event-date">` + result.date + `</div>
+                                        <div class="object-event-time">` + result.timeFrom + ` - ` + result.timeTo + `</div>
+                                    </div>
+                                </div>
+                                <div class="object-event-descr">
+                                    ` + result.description + `
+                                </div>
+                            </div>
+                         `;
+                        $('.create-event-form-close').click();
+                        $('.object-events').not('.hidden').children('.object-events-list').append(htmlToAppend);
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log(xhr.status);
+                        console.log(ajaxOptions);
+                        console.log(thrownError);
+                    }
+                }
+            ).done(function (res) {
+                console.log(res);
+                // TODO: отобразить добавленную информацию в списке событий;
+            });
+        }
+
+    });
+
+    $('.create-event-form-close').click(function () {
+        $('.create-event-wrap-table').removeClass('active');
+        $('header, main, footer, .object-events').removeClass('blurry');
+        $('#createEvent input, #createEvent textarea').removeClass('input-validation-error');
+        $('#createEvent input, #createEvent textarea').not("#createEvent input[type=submit]").val("");
+    });
+    /* /Создание события */
+
+
 });

@@ -10,8 +10,8 @@ using Thesis.Data;
 namespace Thesis.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190409140404_Update_Image")]
-    partial class Update_Image
+    [Migration("20190411151518_ModelFix")]
+    partial class ModelFix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -187,6 +187,18 @@ namespace Thesis.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("Thesis.Models.District", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Districts");
+                });
+
             modelBuilder.Entity("Thesis.Models.Event", b =>
                 {
                     b.Property<string>("Id")
@@ -234,21 +246,39 @@ namespace Thesis.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<string>("District");
+                    b.Property<string>("DistrictId");
 
                     b.Property<bool>("Light");
 
                     b.Property<string>("PhotoId");
 
-                    b.Property<string>("Terrain");
+                    b.Property<string>("TerrainId");
 
-                    b.Property<string>("Type");
+                    b.Property<string>("TypeId");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DistrictId");
+
                     b.HasIndex("PhotoId");
 
+                    b.HasIndex("TerrainId");
+
+                    b.HasIndex("TypeId");
+
                     b.ToTable("Objects");
+                });
+
+            modelBuilder.Entity("Thesis.Models.ObjectType", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ObjectTypes");
                 });
 
             modelBuilder.Entity("Thesis.Models.SuggestedInfo", b =>
@@ -271,6 +301,18 @@ namespace Thesis.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SuggestedInfo");
+                });
+
+            modelBuilder.Entity("Thesis.Models.Terrain", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Terrains");
                 });
 
             modelBuilder.Entity("Thesis.Models.UserObject", b =>
@@ -364,9 +406,21 @@ namespace Thesis.Migrations
 
             modelBuilder.Entity("Thesis.Models.Object", b =>
                 {
+                    b.HasOne("Thesis.Models.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId");
+
                     b.HasOne("Thesis.Models.FileModel", "Photo")
                         .WithMany()
                         .HasForeignKey("PhotoId");
+
+                    b.HasOne("Thesis.Models.Terrain", "Terrain")
+                        .WithMany()
+                        .HasForeignKey("TerrainId");
+
+                    b.HasOne("Thesis.Models.ObjectType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId");
                 });
 
             modelBuilder.Entity("Thesis.Models.UserObject", b =>

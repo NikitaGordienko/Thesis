@@ -15,6 +15,9 @@ namespace Thesis.Data
         public DbSet<Event> Events { get; set; }
         public DbSet<SuggestedInfo> SuggestedInfo { get; set; }
         public DbSet<FileModel> Files { get; set; }
+        public DbSet<ObjectType> ObjectTypes { get; set; }
+        public DbSet<Terrain> Terrains { get; set; }
+        public DbSet<District> Districts { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
