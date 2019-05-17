@@ -16,199 +16,118 @@
                 <div class="filter-item">
                     <div class="filter-item-name">Район</div>
                     <div class="filter-item-options">
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
-                                <span class="filter-item-option-check"></span>
-                            </div>
-                            <div class="filter-item-option-label">Раменки</div>
-                        </div>
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
-                                <span class="filter-item-option-check"></span>
-                            </div>
-                            <div class="filter-item-option-label">Проспект Вернадского и еще</div>
-                        </div>
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
-                                <span class="filter-item-option-check"></span>
-                            </div>
-                            <div class="filter-item-option-label">Теплый Стан</div>
-                        </div>
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
-                                <span class="filter-item-option-check"></span>
-                            </div>
-                            <div class="filter-item-option-label">Хамовники</div>
-                        </div>
+                        @{
+                            foreach (var district in _context.Districts.ToList())
+                            {
+                                <div class="filter-item-option">
+                                    <div class="filter-item-option-checkbox">
+                                        <input type="checkbox" id="@district.Id">
+                                        <span class="filter-item-option-check"></span>
+                                    </div>
+                                    <div class="filter-item-option-label">@district.Name</div>
+                                </div>
+                            }
+                        }
+
                         <div class="filter-item-showall">+ Показать все</div>
                     </div>
                 </div>
                 <div class="filter-item">
                     <div class="filter-item-name">Тип объекта</div>
                     <div class="filter-item-options">
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
-                                <span class="filter-item-option-check"></span>
-                            </div>
-                            <div class="filter-item-option-label">Скейт-парк</div>
-                        </div>
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
-                                <span class="filter-item-option-check"></span>
-                            </div>
-                            <div class="filter-item-option-label">Площадка для воркаута</div>
-                        </div>
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
-                                <span class="filter-item-option-check"></span>
-                            </div>
-                            <div class="filter-item-option-label">Площадка для игровых видов</div>
-                        </div>
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
-                                <span class="filter-item-option-check"></span>
-                            </div>
-                            <div class="filter-item-option-label">Скейт-парк</div>
-                        </div>
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
-                                <span class="filter-item-option-check"></span>
-                            </div>
-                            <div class="filter-item-option-label">Площадка для воркаута</div>
-                        </div>
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
-                                <span class="filter-item-option-check"></span>
-                            </div>
-                            <div class="filter-item-option-label">Площадка для игровых видов</div>
-                        </div>
+                        @{
+                            foreach (var objType in _context.ObjectTypes.ToList())
+                            {
+                                <div class="filter-item-option">
+                                    <div class="filter-item-option-checkbox">
+                                        <input type="checkbox" id="@objType.Id">
+                                        <span class="filter-item-option-check"></span>
+                                    </div>
+                                    <div class="filter-item-option-label">@objType.Name</div>
+                                </div>
+                            }
+                        }
                         <div class="filter-item-showall">+ Показать все</div>
                     </div>
                 </div>
                 <div class="filter-item">
                     <div class="filter-item-name">Покрытие</div>
                     <div class="filter-item-options">
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
-                                <span class="filter-item-option-check"></span>
+                        @foreach (var terrain in _context.Terrains.ToList())
+                        {
+                            <div class="filter-item-option">
+                                <div class="filter-item-option-checkbox">
+                                    <input type="checkbox" id="@terrain.Id">
+                                    <span class="filter-item-option-check"></span>
+                                </div>
+                                <div class="filter-item-option-label">@terrain.Name</div>
                             </div>
-                            <div class="filter-item-option-label">Асфальт</div>
-                        </div>
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
-                                <span class="filter-item-option-check"></span>
-                            </div>
-                            <div class="filter-item-option-label">Резиновая крошка</div>
-                        </div>
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
-                                <span class="filter-item-option-check"></span>
-                            </div>
-                            <div class="filter-item-option-label">Газон</div>
-                        </div>
+                        }
                         <div class="filter-item-showall">+ Показать все</div>
                     </div>
                 </div>
                 <div class="filter-item">
-                    <div class="filter-item-name">Покрытие</div>
+                    <div class="filter-item-name">Освещение</div>
                     <div class="filter-item-options">
                         <div class="filter-item-option">
                             <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
+                                <input type="checkbox" id="lighttrue">
                                 <span class="filter-item-option-check"></span>
                             </div>
-                            <div class="filter-item-option-label">Асфальт</div>
+                            <div class="filter-item-option-label">Есть</div>
                         </div>
                         <div class="filter-item-option">
                             <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
+                                <input type="checkbox" id="lightfalse">
                                 <span class="filter-item-option-check"></span>
                             </div>
-                            <div class="filter-item-option-label">Резиновая крошка</div>
+                            <div class="filter-item-option-label">Нет</div>
                         </div>
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="">
-                                <span class="filter-item-option-check"></span>
-                            </div>
-                            <div class="filter-item-option-label">Газон</div>
-                        </div>
-                        <div class="filter-item-showall">+ Показать все</div>
                     </div>
                 </div>
             </div>
+            <a href="#" class="filter-apply">
+                Применить
+            </a>
         </div>
         <div class="search-right">
             <div class="search-result-header">
-                <div class="search-result-title">Результат поиска (<span class="search-result-count">@*Model.Count()*@</span>)</div>
+                <div class="search-result-title">Результат поиска (<span class="search-result-count">@Model.Count()</span>)</div>
                 <div class="search-result-clear">Сбросить фильтр</div>
             </div>
             <div class="search-result-list">
-                <div class="search-result-item">
-                    <div class="search-result-item-left">
-                        <div class="search-result-photo">
-                            <img src="images/object.jpg" alt="">
-                        </div>
-                        <!--
-                        -->
-                        <div class="search-result-address-info">
-                            <div class="search-result-address-wrap">
-                                <div class="search-result-address">
-                                    <div class="search-result-address-main">ул. 26 Бакинских комиссаров, 3к4</div>
-                                    <div class="search-result-address-district">Теплый Стан</div>
+                @{
+                    foreach (var objItem in Model)
+                    {
+                        string objLight = "Есть";
+                        if (objItem.Light == false)
+                        {
+                            objLight = "Нет";
+                        }
+                        <div class="search-result-item">
+                            <div class="search-result-item-left" style="display: flex;">
+                                <div class="search-result-photo">
+                                    <img src="@objItem.Photo.Path" alt="">
+                                </div>
+                                <div class="search-result-address-info">
+                                    <!--<div class="search-result-address-main">ул. 26 Бакинских комиссаров, 3к4</div>-->
+                                    <div class="search-result-item-type">@objItem.Type.Name</div>
+                                    <div class="search-result-address-district">@objItem.District.Name</div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Комментарий для избавления от промежутка между двумя inline-block-->
-                    </div>
-                    <div class="search-result-item-right">
-                        <div class="search-result-item-props">
-                            <div class="search-result-item-type">Площадка для воркаута</div>
-                            <div class="search-result-item-terrain">Покрытие: <span>Асфальт</span></div>
-                            <div class="search-result-item-light">Освещение: <span>Есть</span></div>
-                        </div>
-                    </div>
-                    <a href="#" class="search-result-item-map">Показать на карте</a>
-                </div>
-                <div class="search-result-item">
-                    <div class="search-result-item-left">
-                        <div class="search-result-photo">
-                            <img src="images/object.jpg" alt="">
-                        </div>
-                        <!--
-                        -->
-                        <div class="search-result-address-info">
-                            <div class="search-result-address-wrap">
-                                <div class="search-result-address">
-                                    <div class="search-result-address-main">ул. 26 Бакинских комиссаров, 3к4</div>
-                                    <div class="search-result-address-district">Теплый Стан</div>
+                            <div class="search-result-item-right">
+                                <div class="search-result-item-props">
+
+                                    <div class="search-result-item-terrain">Покрытие: <span>@objItem.Terrain.Name</span></div>
+                                    <div class="search-result-item-light">Освещение: <span>@objLight</span></div>
                                 </div>
                             </div>
+                            <a href="#" class="search-result-item-map">Показать на карте</a>
                         </div>
-                        <!-- Комментарий для избавления от промежутка между двумя inline-block-->
-                    </div>
-                    <div class="search-result-item-right">
-                        <div class="search-result-item-props">
-                            <div class="search-result-item-type">Площадка для воркаута</div>
-                            <div class="search-result-item-terrain">Покрытие: <span>Асфальт</span></div>
-                            <div class="search-result-item-light">Освещение: <span>Есть</span></div>
-                        </div>
-                    </div>
-                    <a href="#" class="search-result-item-map">Показать на карте</a>
-                </div>
+                    }
+
+                }
+
             </div>
             <div class="search-result-question">
                 Не нашли площадку?<br><a href="#">Добавьте</a> информацию о ней вручную
