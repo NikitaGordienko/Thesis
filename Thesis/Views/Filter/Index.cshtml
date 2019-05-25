@@ -1,5 +1,6 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model IEnumerable<Thesis.Models.Object>
+@*model IEnumerable<Thesis.Models.Object>*@
+@model Thesis.Models.PagingResult<Thesis.Models.Object>
 @inject Thesis.Data.ApplicationDbContext _context
 
 @{
@@ -24,7 +25,7 @@
                                         <input type="checkbox" id="@district.Id">
                                         <span class="filter-item-option-check"></span>
                                     </div>
-                                    <div class="filter-item-option-label">@district.Name</div>
+                                    <div class="filter-item-option-label">@district.Name (@_context.Objects.Where(t => t.DistrictId == district.Id).Count())</div>
                                 </div>
                             }
                         }
@@ -43,7 +44,7 @@
                                         <input type="checkbox" id="@objType.Id">
                                         <span class="filter-item-option-check"></span>
                                     </div>
-                                    <div class="filter-item-option-label">@objType.Name</div>
+                                    <div class="filter-item-option-label">@objType.Name (@_context.Objects.Where(t => t.TypeId == objType.Id).Count())</div>
                                 </div>
                             }
                         }
@@ -60,7 +61,7 @@
                                     <input type="checkbox" id="@terrain.Id">
                                     <span class="filter-item-option-check"></span>
                                 </div>
-                                <div class="filter-item-option-label">@terrain.Name</div>
+                                <div class="filter-item-option-label">@terrain.Name (@_context.Objects.Where(t => t.TerrainId == terrain.Id).Count())</div>
                             </div>
                         }
                         <div class="filter-item-showall">+ Показать все</div>
@@ -74,30 +75,30 @@
                                 <input type="checkbox" id="lighttrue">
                                 <span class="filter-item-option-check"></span>
                             </div>
-                            <div class="filter-item-option-label">Есть</div>
+                            <div class="filter-item-option-label">Есть (@_context.Objects.Where(t => t.Light == true).Count())</div>
                         </div>
                         <div class="filter-item-option">
                             <div class="filter-item-option-checkbox">
                                 <input type="checkbox" id="lightfalse">
                                 <span class="filter-item-option-check"></span>
                             </div>
-                            <div class="filter-item-option-label">Нет</div>
+                            <div class="filter-item-option-label">Нет (@_context.Objects.Where(t => t.Light == false).Count())</div>
                         </div>
                     </div>
                 </div>
             </div>
             <a href="#" class="filter-apply">
-                Применить
+                Применить   
             </a>
         </div>
         <div class="search-right">
             <div class="search-result-header">
-                <div class="search-result-title">Результат поиска (<span class="search-result-count">@Model.Count()</span>)</div>
+                <div class="search-result-title">Результаты поиска (<span class="search-result-count">@Model.RowCount</span>)</div>
                 <div class="search-result-clear">Сбросить фильтр</div>
             </div>
             <div class="search-result-list">
                 @{
-                    foreach (var objItem in Model)
+                    foreach (var objItem in Model.Results)
                     {
                         string objLight = "Есть";
                         if (objItem.Light == false)
@@ -129,6 +130,10 @@
                 }
 
             </div>
+            @for (var p = 1; p <= Model.PageCount; p++)
+            {
+                <a href="@Url.Action("Index", new { page = p })" class="btn btn-default">@p</a>
+            }
             <div class="search-result-question">
                 Не нашли площадку?<br><a href="#">Добавьте</a> информацию о ней вручную
             </div>

@@ -24,7 +24,7 @@ namespace Thesis.Controllers
             //this.signinManager = signinManager ?? throw new ArgumentNullException(nameof(signinManager));
         }
 
-        public ActionResult Index()
+        public ActionResult Index(int page = 1)
         {
             var objList = context.Objects.ToList();
             foreach (var obj in objList)
@@ -35,8 +35,15 @@ namespace Thesis.Controllers
                 obj.Photo = context.Files.First(t => t.Id == obj.PhotoId);
             }
 
-            return View(objList);
-            //return View();
+            var objListPaged = objList.AsQueryable().GetPaged(page, 3);
+
+            return View(objListPaged);
+
+        }
+
+        public ActionResult Filter ()
+        {
+            return View();
         }
     }
 }
