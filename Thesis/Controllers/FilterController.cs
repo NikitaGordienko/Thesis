@@ -27,6 +27,12 @@ namespace Thesis.Controllers
         public ActionResult Index(int page = 1)
         {
             var objList = context.Objects.ToList();
+            List<string> arr = new List<string>();
+            //arr.Add("Раменки");
+            //arr.Add("Проспект Вернадского");
+           
+
+
             foreach (var obj in objList)
             {
                 obj.District = context.Districts.First(t => t.Id == obj.DistrictId);
@@ -35,7 +41,13 @@ namespace Thesis.Controllers
                 obj.Photo = context.Files.First(t => t.Id == obj.PhotoId);
             }
 
-            var objListPaged = objList.AsQueryable().GetPaged(page, 3);
+
+            var objListt = from objj
+                          in objList
+                          where arr.Contains(objj.District.Name) // что делать с пустым запросом?
+                          select objj;
+
+            var objListPaged = objListt.AsQueryable().GetPaged(page, 3);
 
             return View(objListPaged);
 

@@ -9,88 +9,88 @@
 }
 
 
-<main class="search">
+<main class="search" style="padding-bottom: 50px;">
     <div class="container">
-        <div class="search-left">
-            <div class="search-filter-title">Фильтр</div>
-            <div class="search-filter">
-                <div class="filter-item">
-                    <div class="filter-item-name">Район</div>
-                    <div class="filter-item-options">
-                        @{
-                            foreach (var district in _context.Districts.ToList())
-                            {
-                                <div class="filter-item-option">
-                                    <div class="filter-item-option-checkbox">
-                                        <input type="checkbox" id="@district.Id">
-                                        <span class="filter-item-option-check"></span>
+        <form method="post" asp-controller="Filter" asp-action="Filter">
+            <div class="search-left">
+                <div class="search-filter-title">Фильтр</div>
+                <div class="search-filter">
+                    <div class="filter-item">
+                        <div class="filter-item-name">Район</div>
+                        <div class="filter-item-options">
+                            @{
+                                foreach (var district in _context.Districts.ToList())
+                                {
+                                    <div class="filter-item-option">
+                                        <div class="filter-item-option-checkbox">
+                                            <input type="checkbox" id="@district.Id">
+                                            <span class="filter-item-option-check"></span>
+                                        </div>
+                                        <div class="filter-item-option-label">@district.Name (@_context.Objects.Where(t => t.DistrictId == district.Id).Count())</div>
                                     </div>
-                                    <div class="filter-item-option-label">@district.Name (@_context.Objects.Where(t => t.DistrictId == district.Id).Count())</div>
-                                </div>
+                                }
                             }
-                        }
 
-                        <div class="filter-item-showall">+ Показать все</div>
+                            <div class="filter-item-showall">+ Показать все</div>
+                        </div>
                     </div>
-                </div>
-                <div class="filter-item">
-                    <div class="filter-item-name">Тип объекта</div>
-                    <div class="filter-item-options">
-                        @{
-                            foreach (var objType in _context.ObjectTypes.ToList())
+                    <div class="filter-item">
+                        <div class="filter-item-name">Тип объекта</div>
+                        <div class="filter-item-options">
+                            @{
+                                foreach (var objType in _context.ObjectTypes.ToList())
+                                {
+                                    <div class="filter-item-option">
+                                        <div class="filter-item-option-checkbox">
+                                            <input type="checkbox" id="@objType.Id">
+                                            <span class="filter-item-option-check"></span>
+                                        </div>
+                                        <div class="filter-item-option-label">@objType.Name (@_context.Objects.Where(t => t.TypeId == objType.Id).Count())</div>
+                                    </div>
+                                }
+                            }
+                            <div class="filter-item-showall">+ Показать все</div>
+                        </div>
+                    </div>
+                    <div class="filter-item">
+                        <div class="filter-item-name">Покрытие</div>
+                        <div class="filter-item-options">
+                            @foreach (var terrain in _context.Terrains.ToList())
                             {
                                 <div class="filter-item-option">
                                     <div class="filter-item-option-checkbox">
-                                        <input type="checkbox" id="@objType.Id">
+                                        <input type="checkbox" id="@terrain.Id">
                                         <span class="filter-item-option-check"></span>
                                     </div>
-                                    <div class="filter-item-option-label">@objType.Name (@_context.Objects.Where(t => t.TypeId == objType.Id).Count())</div>
+                                    <div class="filter-item-option-label">@terrain.Name (@_context.Objects.Where(t => t.TerrainId == terrain.Id).Count())</div>
                                 </div>
                             }
-                        }
-                        <div class="filter-item-showall">+ Показать все</div>
+                            <div class="filter-item-showall">+ Показать все</div>
+                        </div>
                     </div>
-                </div>
-                <div class="filter-item">
-                    <div class="filter-item-name">Покрытие</div>
-                    <div class="filter-item-options">
-                        @foreach (var terrain in _context.Terrains.ToList())
-                        {
+                    <div class="filter-item">
+                        <div class="filter-item-name">Освещение</div>
+                        <div class="filter-item-options">
                             <div class="filter-item-option">
                                 <div class="filter-item-option-checkbox">
-                                    <input type="checkbox" id="@terrain.Id">
+                                    <input type="checkbox" id="lighttrue">
                                     <span class="filter-item-option-check"></span>
                                 </div>
-                                <div class="filter-item-option-label">@terrain.Name (@_context.Objects.Where(t => t.TerrainId == terrain.Id).Count())</div>
+                                <div class="filter-item-option-label">Есть (@_context.Objects.Where(t => t.Light == true).Count())</div>
                             </div>
-                        }
-                        <div class="filter-item-showall">+ Показать все</div>
-                    </div>
-                </div>
-                <div class="filter-item">
-                    <div class="filter-item-name">Освещение</div>
-                    <div class="filter-item-options">
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="lighttrue">
-                                <span class="filter-item-option-check"></span>
+                            <div class="filter-item-option">
+                                <div class="filter-item-option-checkbox">
+                                    <input type="checkbox" id="lightfalse">
+                                    <span class="filter-item-option-check"></span>
+                                </div>
+                                <div class="filter-item-option-label">Нет (@_context.Objects.Where(t => t.Light == false).Count())</div>
                             </div>
-                            <div class="filter-item-option-label">Есть (@_context.Objects.Where(t => t.Light == true).Count())</div>
-                        </div>
-                        <div class="filter-item-option">
-                            <div class="filter-item-option-checkbox">
-                                <input type="checkbox" id="lightfalse">
-                                <span class="filter-item-option-check"></span>
-                            </div>
-                            <div class="filter-item-option-label">Нет (@_context.Objects.Where(t => t.Light == false).Count())</div>
                         </div>
                     </div>
                 </div>
+                <input type="submit" class="filter-apply" value="Применить">
             </div>
-            <a href="#" class="filter-apply">
-                Применить   
-            </a>
-        </div>
+        </form>
         <div class="search-right">
             <div class="search-result-header">
                 <div class="search-result-title">Результаты поиска (<span class="search-result-count">@Model.RowCount</span>)</div>
@@ -130,10 +130,21 @@
                 }
 
             </div>
-            @for (var p = 1; p <= Model.PageCount; p++)
-            {
-                <a href="@Url.Action("Index", new { page = p })" class="btn btn-default">@p</a>
-            }
+            <ul class="search-pagination">
+                @for (var p = 1; p <= Model.PageCount; p++)
+                {
+                    <li>
+                        @if (p == Model.CurrentPage)
+                        {
+                            <a href="@Url.Action("Index", new { page = p })" class="pagination-page current">@p</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index", new { page = p })" class="pagination-page">@p</a>
+                        }
+                    </li>
+                }
+            </ul>
             <div class="search-result-question">
                 Не нашли площадку?<br><a href="#">Добавьте</a> информацию о ней вручную
             </div>
