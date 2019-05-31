@@ -42,6 +42,7 @@ namespace Thesis.Data
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
         //    //optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=thesisdb;Trusted_Connection=True;");
+        //    //optionsBuilder.EnableSensitiveDataLogging();
         //}
     }
 }

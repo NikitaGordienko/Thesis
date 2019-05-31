@@ -259,4 +259,33 @@ $(document).ready(function(){
     /* /Создание события */
 
 
+    /* Подписка и отписка */
+    $('.search-result-subscribe').click(function () {
+        var objectId = $(this).attr('id').substr($(this).attr('id').indexOf('_') + 1);
+        if ($(this).hasClass('subscribe')) {
+            $.get("/Filter/Subscribe/" + objectId, function (response) {
+                if (response.res == "success") {
+                    var curObj = $('#subscribe_' + response.resObject);
+                    curObj.removeClass('subscribe');
+                    curObj.addClass('unsubscribe');
+                    curObj.attr('id', 'unsubscribe_' + response.resObject);
+                }
+            });
+        }
+        else {
+            $.get("/Filter/Unsubscribe/" + objectId, function (response) {
+                if (response.res == "success") {
+                    var curObj = $('#unsubscribe_' + response.resObject);
+                    curObj.removeClass('unsubscribe');
+                    curObj.addClass('subscribe');
+                    curObj.attr('id', 'subscribe_' + response.resObject);
+                }
+            });
+        }
+
+    });
+
+    /*/ Подписка и отписка */
+
+
 });

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Thesis.Migrations
 {
-    public partial class ModelFix : Migration
+    public partial class UserObjectFixx : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -57,23 +57,6 @@ namespace Thesis.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ObjectTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SuggestedInfo",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    Address = table.Column<string>(nullable: true),
-                    Photo = table.Column<string>(nullable: true),
-                    District = table.Column<string>(nullable: true),
-                    Type = table.Column<string>(nullable: true),
-                    Terrain = table.Column<string>(nullable: true),
-                    Light = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SuggestedInfo", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -180,6 +163,47 @@ namespace Thesis.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Objects_ObjectTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "ObjectTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SuggestedInfo",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    Address = table.Column<string>(nullable: true),
+                    PhotoId = table.Column<string>(nullable: true),
+                    DistrictId = table.Column<string>(nullable: true),
+                    TypeId = table.Column<string>(nullable: true),
+                    TerrainId = table.Column<string>(nullable: true),
+                    Light = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SuggestedInfo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SuggestedInfo_Districts_DistrictId",
+                        column: x => x.DistrictId,
+                        principalTable: "Districts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SuggestedInfo_Files_PhotoId",
+                        column: x => x.PhotoId,
+                        principalTable: "Files",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SuggestedInfo_Terrains_TerrainId",
+                        column: x => x.TerrainId,
+                        principalTable: "Terrains",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SuggestedInfo_ObjectTypes_TypeId",
                         column: x => x.TypeId,
                         principalTable: "ObjectTypes",
                         principalColumn: "Id",
@@ -397,6 +421,26 @@ namespace Thesis.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Objects_TypeId",
                 table: "Objects",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SuggestedInfo_DistrictId",
+                table: "SuggestedInfo",
+                column: "DistrictId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SuggestedInfo_PhotoId",
+                table: "SuggestedInfo",
+                column: "PhotoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SuggestedInfo_TerrainId",
+                table: "SuggestedInfo",
+                column: "TerrainId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SuggestedInfo_TypeId",
+                table: "SuggestedInfo",
                 column: "TypeId");
 
             migrationBuilder.CreateIndex(
