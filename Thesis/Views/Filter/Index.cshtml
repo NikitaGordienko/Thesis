@@ -1,7 +1,10 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Microsoft.AspNetCore.Identity;
+@using Thesis.Models;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @*model IEnumerable<Thesis.Models.Object>*@
 @model Thesis.Models.PagingResult<Thesis.Models.Object>
 @inject Thesis.Data.ApplicationDbContext _context
+@inject UserManager<User> userManager
 
 @{
     Layout = "_Layout";
@@ -96,6 +99,13 @@
                 <div class="search-result-title">Результаты поиска (<span class="search-result-count">@Model.RowCount</span>)</div>
                 <div class="search-result-clear">Сбросить фильтр</div>
             </div>
+            @{ 
+                User currentUser = null;
+                if (User.Identity.IsAuthenticated)
+                {
+                    currentUser = _context.Users.First(x => x.UserName == User.Identity.Name);
+                }
+            }
             <div class="search-result-list">
                 @{
                     foreach (var objItem in Model.Results)
@@ -105,7 +115,8 @@
                         {
                             objLight = "Нет";
                         }
-                        <div class="search-result-item">
+                        <div class="search-result-item" id="@objItem.Id">
+
                             <div class="search-result-item-left" style="display: flex;">
                                 <div class="search-result-photo">
                                     <img src="@objItem.Photo.Path" alt="">
@@ -123,7 +134,35 @@
                                     <div class="search-result-item-light">Освещение: <span>@objLight</span></div>
                                 </div>
                             </div>
-                            <a href="#" class="search-result-item-map">Показать на карте</a>
+                            <div class="search-result-bottom" style="min-height: 38px">
+                                <a href="#" class="search-result-item-map">Показать на карте</a>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    // получаем все записи UserObjects от конкретной площадки
+                                    List<UserObject> objUserObjects = _context.UserObjects.Where(x => x.ObjectId == objItem.Id).ToList();
+                                    List<string> objUserIds = new List<string>();
+                                    foreach (UserObject objUserObject in objUserObjects)
+                                    {
+                                        objUserIds.Add(objUserObject.UserId);
+                                    }
+                                    if (objUserIds.Contains(currentUser.Id))
+                                    {
+                                        <div class="search-result-subscribe unsubscribe" id="unsubscribe_@objItem.Id">
+                                            @*<img src="~/images/unfollow.png" />*@
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="search-result-subscribe subscribe" id="subscribe_@objItem.Id">
+                                            @*<img src="~/images/follow.png" />*@
+                                        </div>
+                                    }
+
+                                }
+
+
+                            </div>
+
                         </div>
                     }
 

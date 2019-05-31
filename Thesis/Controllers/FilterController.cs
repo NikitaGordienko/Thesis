@@ -24,14 +24,24 @@ namespace Thesis.Controllers
             //this.signinManager = signinManager ?? throw new ArgumentNullException(nameof(signinManager));
         }
 
+
+        public async Task<User> GetCurrentUser()
+        {
+            return await userManager.GetUserAsync(User);
+        }
+
+
         public ActionResult Index(int page = 1)
         {
             var objList = context.Objects.ToList();
-            List<string> arr = new List<string>();
+            //List<string> arr = new List<string>();
             //arr.Add("Раменки");
             //arr.Add("Проспект Вернадского");
-           
 
+            //var objListt = from objj
+            //              in objList
+            //              where arr.Contains(objj.District.Name) // что делать с пустым запросом?
+            //              select objj;
 
             foreach (var obj in objList)
             {
@@ -41,21 +51,56 @@ namespace Thesis.Controllers
                 obj.Photo = context.Files.First(t => t.Id == obj.PhotoId);
             }
 
-
-            var objListt = from objj
-                          in objList
-                          where arr.Contains(objj.District.Name) // что делать с пустым запросом?
-                          select objj;
-
-            var objListPaged = objListt.AsQueryable().GetPaged(page, 3);
+            var objListPaged = objList.AsQueryable().GetPaged(page, 3);
 
             return View(objListPaged);
 
         }
 
+
         public ActionResult Filter ()
         {
             return View();
         }
+
+
+        [HttpGet]
+        public ActionResult Subscribe(string id)
+        {
+            var currentUser = GetCurrentUser().Result;
+            UserObject userObject = new UserObject
+            {
+                Object = context.Objects.First(t => t.Id == id),
+                User = currentUser,
+                Id = Guid.NewGuid().ToString()
+            };
+
+            context.UserObjects.Add(userObject);
+            context.SaveChanges();
+
+            return Json(new
+            {
+                res = "success",
+                resUser = userObject.UserId,
+                resObject = userObject.ObjectId,
+            });
+        }
+
+
+        public ActionResult Unsubscribe(string id)
+        {
+            var currentUser = GetCurrentUser().Result;
+            UserObject userObjectToRemove = context.UserObjects.First(x => x.UserId == currentUser.Id && x.ObjectId == id);
+            context.UserObjects.Remove(userObjectToRemove);
+            context.SaveChanges();
+
+            return Json(new
+            {
+                res = "success",
+                resUser = currentUser.Id,
+                resObject = id
+            });
+        }
+
     }
 }
