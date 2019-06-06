@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using Thesis.Models;
 @inject UserManager<User> userManager
+@inject Thesis.Data.ApplicationDbContext _context
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <!DOCTYPE html>
@@ -38,8 +39,11 @@
             <div class="header-auth">
                 @if (User.Identity.IsAuthenticated)
                 {
+                    var curUser = _context.Users.First(t => t.UserName == User.Identity.Name);
+                    curUser.Avatar = _context.Files.First(t => t.Id == curUser.AvatarId);
+
                     <div class="header-auth-profile">
-                        <img src="@userManager.FindByNameAsync(User.Identity.Name).Result.Avatar.Path" alt="" style="border-radius: 50%">
+                        <img src="@curUser.Avatar.Path" alt="" style="border-radius: 50%">
                         <ul class="header-auth-profile-menu">
                             <li class="header-auth-profile-menu-item">
                                 <a asp-controller="Auth" asp-action="Profile">Профиль</a>
@@ -66,7 +70,7 @@
 
     @RenderBody()
 
-    <footer class="footer">
+    <footer class="footer" id="footer">
         <div class="container">
             <ul class="footer-menu">
                 <li class="footer-menu-item">
