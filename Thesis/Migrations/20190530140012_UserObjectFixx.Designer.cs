@@ -10,14 +10,14 @@ using Thesis.Data;
 namespace Thesis.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190411151518_ModelFix")]
-    partial class ModelFix
+    [Migration("20190530140012_UserObjectFixx")]
+    partial class UserObjectFixx
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
+                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -288,17 +288,25 @@ namespace Thesis.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<string>("District");
+                    b.Property<string>("DistrictId");
 
                     b.Property<bool>("Light");
 
-                    b.Property<string>("Photo");
+                    b.Property<string>("PhotoId");
 
-                    b.Property<string>("Terrain");
+                    b.Property<string>("TerrainId");
 
-                    b.Property<string>("Type");
+                    b.Property<string>("TypeId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DistrictId");
+
+                    b.HasIndex("PhotoId");
+
+                    b.HasIndex("TerrainId");
+
+                    b.HasIndex("TypeId");
 
                     b.ToTable("SuggestedInfo");
                 });
@@ -405,6 +413,25 @@ namespace Thesis.Migrations
                 });
 
             modelBuilder.Entity("Thesis.Models.Object", b =>
+                {
+                    b.HasOne("Thesis.Models.District", "District")
+                        .WithMany()
+                        .HasForeignKey("DistrictId");
+
+                    b.HasOne("Thesis.Models.FileModel", "Photo")
+                        .WithMany()
+                        .HasForeignKey("PhotoId");
+
+                    b.HasOne("Thesis.Models.Terrain", "Terrain")
+                        .WithMany()
+                        .HasForeignKey("TerrainId");
+
+                    b.HasOne("Thesis.Models.ObjectType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId");
+                });
+
+            modelBuilder.Entity("Thesis.Models.SuggestedInfo", b =>
                 {
                     b.HasOne("Thesis.Models.District", "District")
                         .WithMany()

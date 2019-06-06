@@ -259,4 +259,121 @@ $(document).ready(function(){
     /* /Создание события */
 
 
+    /* Подписка и отписка */
+    $('.search-result-subscribe').click(function () {
+        var objectId = $(this).attr('id').substr($(this).attr('id').indexOf('_') + 1);
+        if ($(this).hasClass('subscribe')) {
+            $.get("/Filter/Subscribe/" + objectId, function (response) {
+                if (response.res == "success") {
+                    var curObj = $('#subscribe_' + response.resObject);
+                    curObj.removeClass('subscribe');
+                    curObj.addClass('unsubscribe');
+                    curObj.attr('id', 'unsubscribe_' + response.resObject);
+                }
+            });
+        }
+        else {
+            $.get("/Filter/Unsubscribe/" + objectId, function (response) {
+                if (response.res == "success") {
+                    var curObj = $('#unsubscribe_' + response.resObject);
+                    curObj.removeClass('unsubscribe');
+                    curObj.addClass('subscribe');
+                    curObj.attr('id', 'subscribe_' + response.resObject);
+                }
+            });
+        }
+
+    });
+
+    /*/ Подписка и отписка */
+
+    /* Фильтр */
+    $('#filter-apply').click(function () {
+
+        //e.preventDefault();
+        // объект, в котором будут храниться массивы всех выбранных параметров
+        var optionsChosen;
+
+        // Районы
+        var optionsDistrict = $('#filter-district .filter-item-options');
+        var optionsDistrictChosen = [];
+        optionsDistrict.find('.filter-item-option').each(function () {
+            var districtInput = $(this).find('input[type=checkbox]');
+            if (districtInput.prop('checked') == true) {
+                optionDistrictChosen = {
+                    id: districtInput.attr('id')
+                };
+                optionsDistrictChosen.push(optionDistrictChosen);
+            }
+        });
+
+        // Типы площадок
+        var optionsType = $('#filter-objecttype .filter-item-options');
+        var optionsTypeChosen = [];
+        optionsType.find('.filter-item-option').each(function () {
+            var typeInput = $(this).find('input[type=checkbox]');
+            if (typeInput.prop('checked') == true) {
+                optionTypeChosen = {
+                    id: typeInput.attr('id')
+                };
+                optionsTypeChosen.push(optionTypeChosen);
+            }    
+        });
+
+        // Покрытия
+        var optionsTerrain = $('#filter-terrain .filter-item-options');
+        var optionsTerrainChosen = [];
+        optionsTerrain.find('.filter-item-option').each(function () {
+            var terrainInput = $(this).find('input[type=checkbox]');
+            if (terrainInput.prop('checked') == true) {
+                optionTerrainChosen = {
+                    id: terrainInput.attr('id')
+                };
+                optionsTerrainChosen.push(optionTerrainChosen);
+            }
+        });
+
+        // Освещение
+        var optionsLight = $('#filter-light .filter-item-options .filter-item-option');
+        optionsLightChosen = "";
+        count = 0;
+        optionsLight.each(function (e) {
+            if ($(this).find('input').prop('checked') == true) {
+                count++;
+            }
+        });
+        
+        if (count == 1) { // если выбран только один вариант
+            if (optionsLight.find('#lighttrue').prop('checked') == true) {
+                optionsLightChosen = "light-true";
+            }
+            else {
+                optionsLightChosen = "light-false";
+            }
+        }
+        else { // если не выбрано ни одного варианта, либо выбраны оба
+            optionsLightChosen = "light-all";
+        }
+
+
+        // создание объекта, передаваемого в метод Filter
+        optionsChosen = {
+            districtsChosen: optionsDistrictChosen,
+            typesChosen: optionsTypeChosen,
+            terrainsChosen: optionsTerrainChosen,
+            lightChosen: optionsLightChosen
+        };
+
+        //console.log(JSON.stringify(optionsChosen));
+
+        // отправка на сервер
+        var data = JSON.stringify(optionsChosen);
+        $('#filter-form').find('input[name=data]').val(data);
+        $('#filter-form').submit();
+
+    });
+
+    /* /Фильтр */
+
+
 });
