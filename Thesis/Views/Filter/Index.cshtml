@@ -1,7 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using Thesis.Models;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@*model IEnumerable<Thesis.Models.Object>*@
 @model Thesis.Models.PagingResult<Thesis.Models.Object>
 @inject Thesis.Data.ApplicationDbContext _context
 @inject UserManager<User> userManager
@@ -14,11 +13,11 @@
 
 <main class="search" style="padding-bottom: 50px;">
     <div class="container">
-        <form method="post" asp-controller="Filter" asp-action="Filter">
+        <form method="post" asp-controller="Filter" asp-action="ApplyFilter" id="filter-form">
             <div class="search-left">
                 <div class="search-filter-title">Фильтр</div>
                 <div class="search-filter">
-                    <div class="filter-item">
+                    <div class="filter-item" id="filter-district">
                         <div class="filter-item-name">Район</div>
                         <div class="filter-item-options">
                             @{
@@ -37,7 +36,7 @@
                             <div class="filter-item-showall">+ Показать все</div>
                         </div>
                     </div>
-                    <div class="filter-item">
+                    <div class="filter-item" id="filter-objecttype">
                         <div class="filter-item-name">Тип объекта</div>
                         <div class="filter-item-options">
                             @{
@@ -55,7 +54,7 @@
                             <div class="filter-item-showall">+ Показать все</div>
                         </div>
                     </div>
-                    <div class="filter-item">
+                    <div class="filter-item" id="filter-terrain">
                         <div class="filter-item-name">Покрытие</div>
                         <div class="filter-item-options">
                             @foreach (var terrain in _context.Terrains.ToList())
@@ -71,7 +70,7 @@
                             <div class="filter-item-showall">+ Показать все</div>
                         </div>
                     </div>
-                    <div class="filter-item">
+                    <div class="filter-item" id="filter-light">
                         <div class="filter-item-name">Освещение</div>
                         <div class="filter-item-options">
                             <div class="filter-item-option">
@@ -91,13 +90,14 @@
                         </div>
                     </div>
                 </div>
-                <input type="submit" class="filter-apply" value="Применить">
+                <input type="hidden" name="data" value="" />
+                <div class="filter-apply" id="filter-apply">Применить</div>
             </div>
         </form>
         <div class="search-right">
             <div class="search-result-header">
                 <div class="search-result-title">Результаты поиска (<span class="search-result-count">@Model.RowCount</span>)</div>
-                <div class="search-result-clear">Сбросить фильтр</div>
+                <div class="search-result-clear"><a href="@Url.Action("Index", new { page = 1 })" style="font-size: 16px;">Сбросить фильтр</a></div>
             </div>
             @{ 
                 User currentUser = null;
@@ -122,7 +122,6 @@
                                     <img src="@objItem.Photo.Path" alt="">
                                 </div>
                                 <div class="search-result-address-info">
-                                    <!--<div class="search-result-address-main">ул. 26 Бакинских комиссаров, 3к4</div>-->
                                     <div class="search-result-item-type">@objItem.Type.Name</div>
                                     <div class="search-result-address-district">@objItem.District.Name</div>
                                 </div>
@@ -147,15 +146,11 @@
                                     }
                                     if (objUserIds.Contains(currentUser.Id))
                                     {
-                                        <div class="search-result-subscribe unsubscribe" id="unsubscribe_@objItem.Id">
-                                            @*<img src="~/images/unfollow.png" />*@
-                                        </div>
+                                        <div class="search-result-subscribe unsubscribe" id="unsubscribe_@objItem.Id"></div>
                                     }
                                     else
                                     {
-                                        <div class="search-result-subscribe subscribe" id="subscribe_@objItem.Id">
-                                            @*<img src="~/images/follow.png" />*@
-                                        </div>
+                                        <div class="search-result-subscribe subscribe" id="subscribe_@objItem.Id"></div>
                                     }
 
                                 }
@@ -172,16 +167,24 @@
             <ul class="search-pagination">
                 @for (var p = 1; p <= Model.PageCount; p++)
                 {
-                    <li>
-                        @if (p == Model.CurrentPage)
+                <li>
+                    @if (p == Model.CurrentPage)
+                    {
+                        if ((bool)ViewData["filtered"] == false)
                         {
                             <a href="@Url.Action("Index", new { page = p })" class="pagination-page current">@p</a>
                         }
-                        else
+
+                    }
+                    else
+                    {
+                        if ((bool)ViewData["filtered"] == false)
                         {
                             <a href="@Url.Action("Index", new { page = p })" class="pagination-page">@p</a>
                         }
-                    </li>
+
+                    }
+                </li>
                 }
             </ul>
             <div class="search-result-question">

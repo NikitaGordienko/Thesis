@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using Thesis.Data;
 using Thesis.Models;
+using Newtonsoft.Json.Linq;
 
 namespace Thesis.Controllers
 {
@@ -34,14 +35,6 @@ namespace Thesis.Controllers
         public ActionResult Index(int page = 1)
         {
             var objList = context.Objects.ToList();
-            //List<string> arr = new List<string>();
-            //arr.Add("Раменки");
-            //arr.Add("Проспект Вернадского");
-
-            //var objListt = from objj
-            //              in objList
-            //              where arr.Contains(objj.District.Name) // что делать с пустым запросом?
-            //              select objj;
 
             foreach (var obj in objList)
             {
@@ -53,14 +46,118 @@ namespace Thesis.Controllers
 
             var objListPaged = objList.AsQueryable().GetPaged(page, 3);
 
+            ViewData["filtered"] = false;
             return View(objListPaged);
 
         }
 
-
-        public ActionResult Filter ()
+        public ActionResult Testt (PagingResult<Models.Object> pagg)
         {
-            return View();
+            return View(pagg);
+        }
+
+        [HttpPost]
+        public ActionResult ApplyFilter(string data)
+        {
+            JObject parsedData = JObject.Parse(data);
+            // полученные параметры свойств
+            JToken filterFormDistricts = parsedData.GetValue("districtsChosen");
+            JToken filterFormTypes = parsedData.GetValue("typesChosen");
+            JToken filterFormTerrains = parsedData.GetValue("terrainsChosen");
+            JToken filterFormLight = parsedData.GetValue("lightChosen");
+
+            // свойства фильтра
+            List<string> districtFilter = new List<string>();
+            List<string> typeFilter = new List<string>();
+            List<string> terrainFilter = new List<string>();
+            List<bool> lightFilter = new List<bool>(); // нужен ли список?
+
+            // если у свойства фильтра не выбран ни один параметр, должны выбираться все записи по этому свойству
+            // районы
+            if (filterFormDistricts.Count() > 0)
+            {
+                foreach (var filterFormDistrict in filterFormDistricts)
+                {
+                    districtFilter.Add(filterFormDistrict.Value<string>("id"));
+                }
+            }
+            else
+            {
+                foreach (District district in context.Districts.ToList())
+                {
+                    districtFilter.Add(district.Id);
+                }
+            }
+
+            // типы
+            if (filterFormTypes.Count() > 0)
+            {
+                foreach (var filterFormType in filterFormTypes)
+                {
+                    typeFilter.Add(filterFormType.Value<string>("id"));
+                }
+            }
+            else
+            {
+                foreach (ObjectType type in context.ObjectTypes.ToList())
+                {
+                    typeFilter.Add(type.Id);
+                }
+            }
+
+            // покрытия
+            if (filterFormTerrains.Count() > 0)
+            {
+                foreach (var filterFormTerrain in filterFormTerrains)
+                {
+                    terrainFilter.Add(filterFormTerrain.Value<string>("id"));
+                }
+            }
+            else
+            {
+                foreach (Terrain terrain in context.Terrains.ToList())
+                {
+                    terrainFilter.Add(terrain.Id);
+                }
+            }
+
+            // освещение
+            if (filterFormLight.ToString() == "light-true")
+            {
+                lightFilter.Add(true);
+            }
+            else if (filterFormLight.ToString() == "light-false")
+            {
+                lightFilter.Add(false);
+            }
+            else 
+            {
+                lightFilter.Add(true);
+                lightFilter.Add(false);
+            }
+
+
+            var objListFiltered = from obj
+                           in context.Objects.ToList()
+                           where districtFilter.Contains(obj.DistrictId) &&
+                                 typeFilter.Contains(obj.TypeId) &&
+                                 terrainFilter.Contains(obj.TerrainId) &&
+                                 lightFilter.Contains(obj.Light)
+                           select obj;
+
+            foreach (var objFiltered in objListFiltered)
+            {
+                objFiltered.District = context.Districts.First(t => t.Id == objFiltered.DistrictId);
+                objFiltered.Type = context.ObjectTypes.First(t => t.Id == objFiltered.TypeId);
+                objFiltered.Terrain = context.Terrains.First(t => t.Id == objFiltered.TerrainId);
+                objFiltered.Photo = context.Files.First(t => t.Id == objFiltered.PhotoId);
+            }
+
+            var objListFilteredPaged = objListFiltered.AsQueryable().GetPaged(1, objListFiltered.Count());
+
+            ViewData["filtered"] = true;
+            return View("Index", objListFilteredPaged);
+
         }
 
 
