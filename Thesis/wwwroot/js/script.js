@@ -77,7 +77,7 @@ $(document).ready(function(){
     });
 
 
-    $('.search-result-question').click(function(){
+    $('.search-result-question a').click(function(){
         $('.add-object-wrap-table').addClass('active');
         $('header, main, footer').addClass('blurry');
     });
@@ -290,7 +290,6 @@ $(document).ready(function(){
     /* Фильтр */
     $('#filter-apply').click(function () {
 
-        //e.preventDefault();
         // объект, в котором будут храниться массивы всех выбранных параметров
         var optionsChosen;
 
@@ -364,8 +363,6 @@ $(document).ready(function(){
             lightChosen: optionsLightChosen
         };
 
-        //console.log(JSON.stringify(optionsChosen));
-
         // отправка на сервер
         var data = JSON.stringify(optionsChosen);
         $('#filter-form').find('input[name=data]').val(data);
@@ -374,6 +371,57 @@ $(document).ready(function(){
     });
 
     /* /Фильтр */
+
+
+    /* Карта на странице фильтра */
+    $('.search-result-item-map').click(function () {
+        $('.filter-item-location-table').addClass('active');
+        $('header, main, footer').addClass('blurry');
+        LoadItemMap($(this).data('itemlocation'));
+    });
+
+    $('.filter-item-location-table .filter-item-location-close').click(function () {
+        $('.filter-item-location-table').removeClass('active');
+        $('header, main, footer').removeClass('blurry');
+        $(this).parents('.filter-item-location-table').find('#filter-map').remove();
+        g = document.createElement('div');
+        g.setAttribute("id", "filter-map");
+        $('.filter-item-map-wrap').append(g);
+    });
+
+    function LoadItemMap(itemLocation) {
+
+        var separatorIndex = itemLocation.indexOf(',');
+        var objLatitude = itemLocation.substr(0, separatorIndex);
+        var objLongitude = itemLocation.substr(separatorIndex + 1);
+
+        DG.then(function () {
+            map = DG.map('filter-map', {
+                center: [objLatitude, objLongitude], // маркер по центру,
+                maxBounds: [
+                    [55.566355, 37.314646],
+                    [55.950471, 37.934649]
+                ],
+                zoom: 14, // оптимальный зум для отображения всей Москвы при загрузке
+                zoomControl: false,
+                fullscreenControl: false
+            });
+
+            markerIcon = DG.icon({
+                iconUrl: '/images/marker.png',
+                iconSize: [24, 32],
+                iconAnchor: [12, 32]
+            });
+
+            marker = DG.marker([objLatitude, objLongitude],
+                {
+                    icon: markerIcon
+                }
+            ).addTo(map);
+        });
+    } 
+
+    /* /Карта на странице фильтра */
 
 
 });
