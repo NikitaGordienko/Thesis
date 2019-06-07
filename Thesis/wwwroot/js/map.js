@@ -155,7 +155,7 @@
 
 
                         })
-                        .addTo(map); //.bindPopup("Тест попап")
+                        .addTo(map); 
 
                 }
 
@@ -213,5 +213,3 @@
 
 });
 
-
-//$(document).on("click", ".hoh", function () { alert(1337) });

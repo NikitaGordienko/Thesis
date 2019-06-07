@@ -134,7 +134,7 @@
                                 </div>
                             </div>
                             <div class="search-result-bottom" style="min-height: 38px">
-                                <a href="#" class="search-result-item-map">Показать на карте</a>
+                                <a href="#" class="search-result-item-map" data-itemlocation="@objItem.Address">Показать на карте</a>
                                 @if (User.Identity.IsAuthenticated)
                                 {
                                     // получаем все записи UserObjects от конкретной площадки
@@ -193,3 +193,12 @@
         </div>
     </div>
 </main>
+
+<div class="filter-item-location-table">
+    <div class="filter-item-location-cell">
+        <div class="filter-item-map-wrap">
+            <div id="filter-map"></div>
+        </div>
+    </div>
+    <div class="filter-item-location-close"></div>
+</div>
