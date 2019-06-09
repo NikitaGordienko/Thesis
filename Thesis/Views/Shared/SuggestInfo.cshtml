@@ -1,0 +1,99 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Thesis.Data;
+@inject ApplicationDbContext context
+
+<div class="add-object-wrap-cell">
+    <form method="post" class="add-object-form" id="suggest-form" asp-controller="Filter" asp-action="SuggestInfo" enctype="multipart/form-data">
+        <div class="add-object-form-close"></div>
+        <div class="add-object-title">Добавление информации о спортивном объекте</div>
+        <div class="add-object-address">
+            <div class="add-object-input-label">Местоположение</div>
+            <div class="add-object-address-input">
+                <input type="text" name="suggest-address" readonly>
+                <div class="add-object-address-input-button">
+                    <a href="#"></a>
+                </div>
+                <div class="add-object-map-wrap">
+                    <div id="suggest-map">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="add-object-photo clearfix">
+            <div class="add-object-input-label">Фотография</div>
+            <div class="add-object-photo-input-wrap">
+                <div class="add-object-photo-input">Выбрать фото</div>
+                <input type="file" name="suggest-photo" value="" />
+            </div>
+            <div class="add-object-input-filename"></div>
+        </div>
+        <div class="add-object-district">
+            <div class="add-object-input-label">Район</div>
+            <div class="add-object-type-dropdown">
+                <div class="select">
+                    <span>Выберите</span>
+                </div>
+                <input type="hidden" name="suggest-district">
+                <ul class="add-object-type-dropdown-menu">
+                    @foreach (var district in context.Districts)
+                    {
+                        <li id="@district.Id">@district.Name</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="add-object-type">
+            <div class="add-object-input-label">Тип спортивного объекта</div>
+            <div class="add-object-type-dropdown">
+                <div class="select">
+                    <span>Выберите</span>
+                </div>
+                <input type="hidden" name="suggest-type">
+                <ul class="add-object-type-dropdown-menu">
+                    @foreach (var type in context.ObjectTypes)
+                    {
+                        <li id="@type.Id">@type.Name</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="add-object-terrain">
+            <div class="add-object-input-label">Покрытие</div>
+            <div class="add-object-type-dropdown">
+                <div class="select">
+                    <span>Выберите</span>
+                </div>
+                <input type="hidden" name="suggest-terrain">
+                <ul class="add-object-type-dropdown-menu">
+                    @foreach (var terrain in context.Terrains)
+                    {
+                        <li id="@terrain.Id">@terrain.Name</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="add-object-light">
+            <div class="add-object-input-label">Наличие освещения</div>
+            <input type="hidden" name="suggest-light" value="" />
+            <div class="add-object-input-light">
+                <div class="add-object-input-indicator">
+                    <span class="active"></span>
+                </div>
+                <input type="radio" id="suggest-lighttrue" name="light" value="true" checked>
+                <label for="lighttrue">Есть</label>
+            </div>
+            <div class="add-object-input-light">
+                <div class="add-object-input-indicator">
+                    <span></span>
+                </div>
+                <input type="radio" id="suggest-lightfalse" name="light" value="false">
+                <label for="lightfalse">Нет</label>
+            </div>
+        </div>
+        <div class="add-object-submit">
+            <input type="submit" value="Добавить" style="display: none;">
+            <input type="hidden" name="data" value="" />
+            <div class="add-object-submit-button">Добавить</div>
+        </div>
+    </form>
+</div>

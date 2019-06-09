@@ -1503,7 +1503,7 @@ textarea.create-event-input-descr {
 /* Добавление объекта */
 .add-object-wrap-table {
     display: none;
-    position: absolute;
+    position: fixed;
     z-index: 20;
     top: 0;
     width: 100%;
@@ -1591,7 +1591,86 @@ textarea.create-event-input-descr {
     margin-top: 8px;
 }
 
-.add-object-type, .add-object-terrain {
+.add-object-map-wrap {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 420px;
+    width: 400px;
+    height: 300px;
+    border-radius: 10px;
+    background: #eee;
+    padding: 10px;
+    box-shadow: 0 0px 15px rgba(0,0,0,0.35);
+}
+
+.add-object-map-wrap.active {
+    display: block;
+}
+
+#suggest-map {
+    width: 100%;
+    height: 100%;
+}
+
+#suggest-map img {
+    max-height: none;
+}
+
+    #suggest-map .suggest-map-close {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        width: 24px;
+        height: 24px;
+        background: url(/images/close.png);
+        background-size: 100%;
+        opacity: 0.5;
+        cursor: pointer;
+        z-index: 10000;
+    }
+
+
+.add-object-photo {
+    /*display: inline-block;*/
+}
+
+.add-object-photo-input-wrap {
+    float: left;
+    width: 50%;
+}
+
+.add-object-photo-input-wrap input {
+    display: none;
+}
+
+.add-object-photo-input {
+    height: 50px;
+    background: #3AFF8C;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 50px;
+    text-align: center;
+    color: #000;
+    border: 0;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.add-object-input-filename {
+    float: left;
+    width: 50%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    color: #000;
+    padding-left: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.add-object-photo, .add-object-district, .add-object-type, .add-object-terrain {
     margin-bottom: 20px;
 }
 
@@ -1712,16 +1791,19 @@ textarea.create-event-input-descr {
 
 .add-object-submit {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 25px;
 }
 
 .add-object-submit-button {
+    width: 170px;
     height: 50px;
+    line-height: 50px;
+    text-align: center;
     background: #3AFF8C;
     font-size: 24px;
     font-weight: 600;
-    padding: 0 30px;
-    border: 0;
+    color: #000;
+    margin: auto;
     border-radius: 7px;
     cursor: pointer;
 }

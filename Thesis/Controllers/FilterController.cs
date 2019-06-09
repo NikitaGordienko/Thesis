@@ -1,9 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Hosting;
 using Thesis.Data;
 using Thesis.Models;
 using Newtonsoft.Json.Linq;
@@ -14,13 +17,16 @@ namespace Thesis.Controllers
     {
         private ApplicationDbContext context;
         private readonly UserManager<User> userManager;
+        // для получения полного пути wwwroot
+        private IHostingEnvironment appEnvironment;
         //private readonly RoleManager<IdentityRole> roleManager;
         //private readonly SignInManager<User> signinManager;
 
-        public FilterController(ApplicationDbContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, SignInManager<User> signinManager)
+        public FilterController(ApplicationDbContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager, SignInManager<User> signinManager, IHostingEnvironment appEnvironment)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
             this.userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
+            this.appEnvironment = appEnvironment ?? throw new ArgumentNullException(nameof(appEnvironment));
             //this.roleManager = roleManager ?? throw new ArgumentNullException(nameof(roleManager));
             //this.signinManager = signinManager ?? throw new ArgumentNullException(nameof(signinManager));
         }
@@ -197,6 +203,44 @@ namespace Thesis.Controllers
                 resUser = currentUser.Id,
                 resObject = id
             });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SuggestInfo (string data)
+        {
+            // альтернатива прямому использованию интерфейса IFormFile
+            var suggestedImage = HttpContext.Request.Form.Files[0];
+            string path = "/images/suggested/" + suggestedImage.FileName;
+            using (var fileStream = new FileStream(appEnvironment.WebRootPath + path, FileMode.Create))
+            {
+                await suggestedImage.CopyToAsync(fileStream);
+            }
+            FileModel file = new FileModel { Name = suggestedImage.FileName, Path = path };
+            context.Files.Add(file);
+            context.SaveChanges();
+
+            JObject parsedData = JObject.Parse(data);
+            // полученные параметры свойств
+            string suggestedAddress = parsedData.GetValue("address").ToString();
+            string suggestedDistrictId = parsedData.GetValue("districtId").ToString();
+            string suggestedTypeId = parsedData.GetValue("typeId").ToString();
+            string suggestedTerrainId = parsedData.GetValue("terrainId").ToString();
+            bool suggestedLight = (bool)parsedData.GetValue("light");
+
+            SuggestedInfo suggestedObject = new SuggestedInfo()
+            {
+                Address = suggestedAddress,
+                Photo = context.Files.First(x => x.Id == file.Id),
+                District = context.Districts.First(x => x.Id == suggestedDistrictId),
+                Type = context.ObjectTypes.First(x => x.Id == suggestedTypeId),
+                Terrain = context.Terrains.First(x => x.Id == suggestedTerrainId),
+                Light = suggestedLight
+            };
+            context.SuggestedInfo.Add(suggestedObject);
+            context.SaveChanges();
+
+            // Перезагрузка страницы
+            return RedirectToAction("Index");
         }
 
     }

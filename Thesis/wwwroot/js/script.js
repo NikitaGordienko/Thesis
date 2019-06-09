@@ -87,35 +87,6 @@ $(document).ready(function(){
         $('header, main, footer').removeClass('blurry');
     });
 
-    /* Select в добавлении площадки */
-    $('.add-object-type-dropdown').click(function () {
-        $(this).attr('tabindex', 1).focus();
-        $(this).toggleClass('active');
-        $(this).find('.add-object-type-dropdown-menu').slideToggle(100);
-    });
-    $('.add-object-type-dropdown').focusout(function () {
-        $(this).removeClass('active');
-        $(this).find('.add-object-type-dropdown-menu').slideUp(100);
-    });
-    $('.add-object-type-dropdown .add-object-type-dropdown-menu li').click(function () {
-        $(this).parents('.add-object-type-dropdown').find('span').text($(this).text());
-        $(this).parents('.add-object-type-dropdown').find('input').attr('value', $(this).attr('id'));
-    });
-    /* /Select в добавлении площадки */
-
-
-    /* Radio в добавлении площадки */
-    $('.add-object-input-indicator').click(function(){
-        $(this).find('span').addClass('active');
-        $(this).parents('.add-object-input-light').find('input[type=radio]').prop('checked', true);
-        var radioOff = $('.add-object-input-light').find('input[type=radio]').not(':checked');
-        radioOff.parents('.add-object-input-light').find('span').removeClass('active');
-
-    });
-
-    /* /Radio в добавлени площадки */
-
-
 
     /* Регистрация */
     $('.field-validation-error').parent('.auth-form-field').find('.auth-form-label').addClass("validation-error");
@@ -423,5 +394,167 @@ $(document).ready(function(){
 
     /* /Карта на странице фильтра */
 
+
+    /* Добавление площадки */
+
+    // Указание местоположения
+    $('.add-object-address-input-button a').click(function () {
+        mapWrapNode = $('.add-object-map-wrap');
+        if (mapWrapNode.hasClass('active')) {
+            mapWrapNode.removeClass('active');
+            mapWrapNode.parents('.add-object-address-input').find('#suggest-map').remove();
+            g = document.createElement('div');
+            g.setAttribute("id", "suggest-map");
+            mapWrapNode.append(g);
+        }
+        else {
+            mapWrapNode.addClass('active');
+            SuggestMap();
+        }
+
+    });
+
+    function SuggestMap() {
+        DG.then(function () {
+            map = DG.map('suggest-map', {
+                center: [55.748216, 37.620921], // центр Москвы,
+                maxBounds: [
+                    [55.566355, 37.314646],
+                    [55.950471, 37.934649]
+                ],
+                zoom: 11, // оптимальный зум для отображения всей Москвы при загрузке
+                zoomControl: false,
+                fullscreenControl: false
+            });
+
+            markerIcon = DG.icon({
+                iconUrl: '/images/marker.png',
+                iconSize: [24, 32],
+                iconAnchor: [12, 32]
+            });
+
+            count = 0; // для проверки наличия маркера
+
+            map.on('click', function (eventData) {
+
+                function FillAddress(markerInfo) {
+                    lat = markerInfo._latlng.lat.toString().substr(0, 9);
+                    lng = markerInfo._latlng.lng.toString().substr(0, 9);
+                    $('input[name=suggest-address]').val(lat + ", " + lng);
+                }
+                count++; 
+                if (count == 1) {
+ 
+
+                    marker = DG.marker([eventData.latlng.lat, eventData.latlng.lng], {
+                        icon: markerIcon,
+                        draggable: true
+                    }).addTo(map);
+                    FillAddress(marker);
+
+                    marker.on('dragend', function (e) {
+                        console.log(e);
+                        FillAddress(marker);
+                    });
+                }
+
+            });
+
+
+        });
+        // двигать маркер
+    }
+
+    $('.add-object-photo-input').click(function () {
+        $('input[name=suggest-photo]').click();
+    });
+
+    $('input[name=suggest-photo]').change(function () {
+        fileFormat(this);
+    });
+    // проверка файла на формат
+    function fileFormat(input) {
+        fileType = input.files[0].type;
+        validImageTypes = ["image/jpeg", "image/png"];
+        if ($.inArray(fileType, validImageTypes) < 0) {
+            alert("Неверный формат файла!");
+            $('input[name=suggest-photo]').val('');
+            $('.add-object-input-filename').text("");
+        }
+        else {
+            $('.add-object-input-filename').text(input.files[0].name);
+        }
+        
+    }
+
+    // Select customize
+    $('.add-object-type-dropdown').click(function () {
+        $(this).attr('tabindex', 1).focus();
+        $(this).toggleClass('active');
+        $(this).find('.add-object-type-dropdown-menu').slideToggle(100);
+    });
+    $('.add-object-type-dropdown').focusout(function () {
+        $(this).removeClass('active');
+        $(this).find('.add-object-type-dropdown-menu').slideUp(100);
+    });
+    $('.add-object-type-dropdown .add-object-type-dropdown-menu li').click(function () {
+        $(this).parents('.add-object-type-dropdown').find('span').text($(this).text());
+        $(this).parents('.add-object-type-dropdown').find('input').attr('value', $(this).attr('id'));
+    });
+
+    // Radio button customize
+    $('.add-object-input-indicator').click(function () {
+        $(this).find('span').addClass('active');
+        //$(this).parents('.add-object-input-light').find('input[type=radio]').prop('checked', true);
+        $(this).parents('.add-object-input-light').find('input[type=radio]').prop('checked', true);
+        var radioOff = $('.add-object-input-light').find('input[type=radio]').not(':checked');
+        radioOff.parents('.add-object-input-light').find('span').removeClass('active');
+
+    });
+
+    // определение параметров и отправка на сервер
+    $('.add-object-submit-button').click(function () {
+        errorCount = 0;
+
+        if ($('input[name=suggest-address]').val() == "") {
+            errorCount++;
+        }
+        if ($('input[name=suggest-photo]').val() == "") {
+            errorCount++;
+        }
+        if ($('input[name=suggest-district]').val() == "") {
+            errorCount++;
+        }
+        if ($('input[name=suggest-type]').val() == "") {
+            errorCount++;
+        }
+        if ($('input[name=suggest-terrain]').val() == "") {
+            errorCount++;
+        }
+
+        if (errorCount > 0) {
+            alert("Не все поля заполнены!");
+        }
+        else {
+            lightProp = true;
+            if ($('#suggest-lighttrue')[0].checked == false) {
+                lightProp = false;
+            }
+
+            data = {
+                address: $('input[name=suggest-address]').val(),
+                districtId: $('input[name=suggest-district]').val(),
+                typeId: $('input[name=suggest-type]').val(),
+                terrainId: $('input[name=suggest-terrain]').val(),
+                light: lightProp
+            };
+            $('#suggest-form input[name=data]').val(JSON.stringify(data));
+
+            $('#suggest-form').submit();
+        }
+    });
+
+
+    /* /Добавление площадки */
 
 });

@@ -99,7 +99,7 @@
                 <div class="search-result-title">Результаты поиска (<span class="search-result-count">@Model.RowCount</span>)</div>
                 <div class="search-result-clear"><a href="@Url.Action("Index", new { page = 1 })" style="font-size: 16px;">Сбросить фильтр</a></div>
             </div>
-            @{ 
+            @{
                 User currentUser = null;
                 if (User.Identity.IsAuthenticated)
                 {
@@ -167,24 +167,24 @@
             <ul class="search-pagination">
                 @for (var p = 1; p <= Model.PageCount; p++)
                 {
-                <li>
-                    @if (p == Model.CurrentPage)
-                    {
-                        if ((bool)ViewData["filtered"] == false)
+                    <li>
+                        @if (p == Model.CurrentPage)
                         {
-                            <a href="@Url.Action("Index", new { page = p })" class="pagination-page current">@p</a>
-                        }
+                            if ((bool)ViewData["filtered"] == false)
+                            {
+                                <a href="@Url.Action("Index", new { page = p })" class="pagination-page current">@p</a>
+                            }
 
-                    }
-                    else
-                    {
-                        if ((bool)ViewData["filtered"] == false)
+                        }
+                        else
                         {
-                            <a href="@Url.Action("Index", new { page = p })" class="pagination-page">@p</a>
-                        }
+                            if ((bool)ViewData["filtered"] == false)
+                            {
+                                <a href="@Url.Action("Index", new { page = p })" class="pagination-page">@p</a>
+                            }
 
-                    }
-                </li>
+                        }
+                    </li>
                 }
             </ul>
             <div class="search-result-question">
@@ -201,4 +201,10 @@
         </div>
     </div>
     <div class="filter-item-location-close"></div>
+</div>
+
+<div class="add-object-wrap-table ">
+    @{
+        await Html.RenderPartialAsync("SuggestInfo");
+    };
 </div>
