@@ -15,23 +15,26 @@
     <title>@ViewData["Title"]</title>
 </head>
 <body>
+    @{
+        var rv = ViewContext.RouteData.Values;
+    }
     <header class="header">
         <div class="container">
             <div class="header-logo">
                 <img src="~/images/ball.png" alt="">
             </div>
             <div class="header-title">
-                <span>Название</span>
+                <span>WinnerStays</span>
             </div>
             <ul class="header-menu">
-                <li class="header-menu-item">
+                <li class="header-menu-item @(rv["Controller"].ToString() == "Home" ? "active" : "")">
                     <a asp-controller="Home" asp-action="Index">Главная</a>
                 </li>
                 <li class="header-menu-item">
                     <a asp-controller="Map" asp-action="Index">Карта</a>
                 </li>
                 <!-- TODO: переключение active -->
-                <li class="header-menu-item">
+                <li class="header-menu-item @(rv["Controller"].ToString() == "Filter" ? "active" : "")">
                     <a asp-controller="Filter" asp-action="Index">Поиск</a>
                 </li>
             </ul>
