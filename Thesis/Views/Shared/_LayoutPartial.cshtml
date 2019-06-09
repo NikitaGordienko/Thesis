@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using Thesis.Models;
 @inject UserManager<User> userManager
+@inject Thesis.Data.ApplicationDbContext _context
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 <!DOCTYPE html>
@@ -14,6 +15,9 @@
     <title>@ViewData["Title"]</title>
 </head>
 <body>
+    @{
+        var rv = ViewContext.RouteData.Values;
+    }
     <header class="header">
         <div class="container">
             <div class="header-logo">
@@ -26,7 +30,7 @@
                 <li class="header-menu-item">
                     <a asp-controller="Home" asp-action="Index">Главная</a>
                 </li>
-                <li class="header-menu-item">
+                <li class="header-menu-item @(rv["Controller"].ToString() == "Map" ? "active" : "")">
                     <a asp-controller="Map" asp-action="Index">Карта</a>
                 </li>
                 <!-- TODO: переключение active -->
@@ -38,8 +42,10 @@
             <div class="header-auth">
                 @if (User.Identity.IsAuthenticated)
                 {
+                    var curUser = _context.Users.First(t => t.UserName == User.Identity.Name);
+                    curUser.Avatar = _context.Files.First(t => t.Id == curUser.AvatarId);
                     <div class="header-auth-profile">
-                        <img src="~/images/man_icon.png" alt="">
+                        <img src="@curUser.Avatar.Path" alt="" style="border-radius: 50%">
                         <ul class="header-auth-profile-menu">
                             <li class="header-auth-profile-menu-item">
                                 <a asp-controller="Auth" asp-action="Profile">Профиль</a>
