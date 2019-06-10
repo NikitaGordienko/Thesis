@@ -1,0 +1,65 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Thesis.Models;
+@model List<Thesis.Models.SuggestedInfo>
+@inject Thesis.Data.ApplicationDbContext _context
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Панель администратора";
+}
+
+<main class="admin-panel">
+    <div class="container">
+        <div class="admin-panel-header">
+            <div class="admin-panel-header-title">Панель администратора</div>
+            <div class="admin-panel-header-descr">Здесь отображается добавленная пользователями информация</div>
+        </div>
+        <div class="admin-panel-suggest-list">
+            @if (Model.Count() == 0)
+            {
+                <div class="admin-panel-suggest-empty">Добавленной пользователями информации пока нет.</div>
+            }
+            @foreach (SuggestedInfo suggestedItem in Model)
+            {
+                string suggestedItemLight = "есть";
+                if (suggestedItem.Light == false)
+                {
+                    suggestedItemLight = "нет";
+                }
+                <div class="admin-panel-suggest-item" id="@suggestedItem.Id">
+                    <div class="suggest-item-wrap">
+                        <div class="suggest-item-left">
+                            <div class="suggest-item-image">
+                                <img src="@suggestedItem.Photo.Path" />
+                            </div>
+                            <div class="suggest-item-info">
+                                <div class="suggest-item-type" title="@suggestedItem.Type.Name">@suggestedItem.Type.Name</div>
+                                <div class="suggest-item-district" title="@suggestedItem.District.Name">@suggestedItem.District.Name</div>
+                            </div>
+                        </div>
+                        <div class="suggest-item-middle">
+                            <div class="suggest-item-terrain">Покрытие: <span title="">@suggestedItem.Terrain.Name</span></div>
+                            <div class="suggest-item-light">Освещение: <span>@suggestedItemLight</span></div>
+                            <div class="suggest-item-address">Местоположение: <a class="suggest-item-map-icon" data-address="@suggestedItem.Address"></a></div>
+                        </div>
+                        <div class="suggest-item-right">
+                            <div class="suggest-item-apply">Принять</div>
+                            <div class="suggest-item-decline">Отклонить</div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</main>
+
+<div class="admin-suggest-item-location-table">
+    <div class="admin-suggest-item-location-cell">
+        <div class="admin-suggest-item-map-wrap">
+            <div id="admin-suggest-map"></div>
+        </div>
+    </div>
+    <div class="admin-suggest-item-location-close"></div>
+</div>
+
