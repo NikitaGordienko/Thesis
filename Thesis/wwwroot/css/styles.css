@@ -226,6 +226,7 @@ header.header {
     position: relative;
     border-radius: 50%;
     border: 2px solid #666;
+    background: #fff;
     height: 40px;
     margin-top: 5px;
     cursor: pointer;
@@ -1874,12 +1875,270 @@ textarea.create-event-input-descr {
 /* /Отображение местоположения площадки на странице фильтра */
 
 
+/* Панель администратора */
+.admin-panel-header {
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
 
+.admin-panel-header-title {
+    font-size: 32px;
+    font-weight: 900;
+}
 
-    /* Кастомизация скролла */
-    ::-webkit-scrollbar {
-        width: 7px;
+.admin-panel-header-descr {
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.admin-panel-suggest-empty {
+    margin-top: 200px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.admin-panel-suggest-item {
+    width: 1111px;
+    border: 3px solid #3AFF8C;
+    padding: 20px 0;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    transition: 0.2s;
+}
+
+.admin-panel-suggest-item:hover {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    transition: 0.2s;
+}
+
+.suggest-item-wrap {
+    height: 150px;
+}
+
+.suggest-item-left {
+    float: left;
+    width: 490px;
+    height: 100%;
+    padding-left: 20px;
+}
+
+.suggest-item-image {
+    float: left;
+    width: 150px;
+    height: 100%;
+    border: 1px solid #444;
+    overflow: hidden;
+}
+
+.suggest-item-info {
+    display: flex;
+    float: left;
+    width: 320px; /* 490px - 150px - padding (20px) */
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 25px;
+}
+
+.suggest-item-type {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1;
+    max-height: 56px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.suggest-item-district {
+    position: relative;
+    padding-left: 30px;
+    font-size: 20px;
+    max-width: 290px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.suggest-item-district:before {
+    position: absolute;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background: url(/images/placeholder.png);
+    background-size: 100%;
+    content: "";
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    opacity: 0.7;
+}
+
+.suggest-item-image img {
+    max-width: none;
+}
+
+.suggest-item-middle {
+    display: flex;
+    float: left;
+    width: 325px;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    border-left: 1px solid rgba(0,0,0,0.2);
+}
+
+.suggest-item-terrain, .suggest-item-light, .suggest-item-address {
+    font-size: 20px;
+    max-width: 284px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.suggest-item-terrain span, .suggest-item-light span, .suggest-item-address span {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.suggest-item-address {
+    position: relative;
+}
+
+.suggest-item-map-icon {
+    position: absolute;
+    top: 0;
+    right: 65px;
+    width: 24px;
+    height: 24px;
+    background: url(/images/map.png);
+    background-size: 100%;
+}
+
+.suggest-item-right {
+    display: flex;
+    float: left;
+    width: 290px;
+    height: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    border-left: 1px solid rgba(0,0,0,0.2);
+    padding: 20px 30px;
+}
+
+.suggest-item-apply, .suggest-item-decline {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    background: #3AFF8C;
+    color: #000;
+    font-weight: 900;
+    text-align: center;
+    padding-left: 15px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.suggest-item-apply:hover, .suggest-item-decline:hover {
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);
+    transition: 0.2s;
+}
+
+.suggest-item-apply:before {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    width: 20px;
+    height: 20px;
+    background: url(/images/suggest-apply.png);
+    background-size: 100%;
+    content: "";
+}
+
+.suggest-item-decline {
+    background: #ff3355;
+    color: #fff;
+}
+
+.suggest-item-decline:before {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    width: 20px;
+    height: 20px;
+    background: url(/images/suggest-decline.png);
+    background-size: 100%;
+    content: "";
+}
+
+.admin-suggest-item-location-table {
+    display: none;
+    position: fixed;
+    z-index: 20;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+    .admin-suggest-item-location-table.active {
+        display: table;
     }
+
+    .admin-suggest-item-location-table .admin-suggest-item-location-close {
+        position: absolute;
+        right: 50px;
+        top: 50px;
+        width: 48px;
+        height: 48px;
+        background: url(/images/close.png);
+        background-size: 100%;
+        opacity: 0.7;
+        cursor: pointer;
+    }
+
+        .admin-suggest-item-location-table .admin-suggest-item-location-close:hover {
+            opacity: 0.9;
+        }
+
+.admin-suggest-item-location-cell {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.admin-suggest-item-map-wrap {
+    margin: auto;
+    width: 750px;
+    height: 500px;
+    background: #eee;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+#admin-suggest-map {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #bbb;
+    border-radius: 10px;
+}
+
+    #admin-suggest-map .leaflet-tile-container > img {
+        max-height: none !important;
+    }
+
+    #admin-suggest-map .leaflet-marker-icon {
+        max-height: none;
+    }
+/* /Панель администратора */
+
+
+
+
+/* Кастомизация скролла */
+::-webkit-scrollbar {
+    width: 7px;
+}
 
 ::-webkit-scrollbar-track {
     background: transparent;

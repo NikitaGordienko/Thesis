@@ -37,6 +37,16 @@
                 <li class="header-menu-item @(rv["Controller"].ToString() == "Filter" ? "active" : "")">
                     <a asp-controller="Filter" asp-action="Index">Поиск</a>
                 </li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    var userRoles = userManager.GetRolesAsync(_context.Users.First(t => t.UserName == User.Identity.Name)).Result;
+                    if (userRoles.Contains("Admin"))
+                    {
+                        <li class="header-menu-item @(rv["Controller"].ToString() == "Admin" ? "active" : "")">
+                            <a asp-controller="Admin" asp-action="Index">Панель администратора</a>
+                        </li>
+                    }
+                }
             </ul>
             <!-- Разделение в зависимости от роли пользователя-->
             <div class="header-auth">

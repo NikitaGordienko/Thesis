@@ -348,7 +348,7 @@ $(document).ready(function(){
     $('.search-result-item-map').click(function () {
         $('.filter-item-location-table').addClass('active');
         $('header, main, footer').addClass('blurry');
-        LoadItemMap($(this).data('itemlocation'));
+        LoadItemMap($(this).data('itemlocation'), 'filter-map');
     });
 
     $('.filter-item-location-table .filter-item-location-close').click(function () {
@@ -360,14 +360,14 @@ $(document).ready(function(){
         $('.filter-item-map-wrap').append(g);
     });
 
-    function LoadItemMap(itemLocation) {
+    function LoadItemMap(itemLocation, mapNodeId) {
 
         var separatorIndex = itemLocation.indexOf(',');
         var objLatitude = itemLocation.substr(0, separatorIndex);
         var objLongitude = itemLocation.substr(separatorIndex + 1);
 
         DG.then(function () {
-            map = DG.map('filter-map', {
+            map = DG.map(mapNodeId, {
                 center: [objLatitude, objLongitude], // маркер по центру,
                 maxBounds: [
                     [55.566355, 37.314646],
@@ -554,7 +554,56 @@ $(document).ready(function(){
         }
     });
 
-
     /* /Добавление площадки */
+
+    /* Панель администратора */
+    $('.suggest-item-map-icon').click(function () {
+        $('.admin-suggest-item-location-table').addClass('active');
+        $('header, main, footer').addClass('blurry');
+        LoadItemMap($(this).data('address'), 'admin-suggest-map');
+    });
+
+    $('.admin-suggest-item-location-table .admin-suggest-item-location-close').click(function () {
+        $('.admin-suggest-item-location-table').removeClass('active');
+        $('header, main, footer').removeClass('blurry');
+        $(this).parents('.admin-suggest-item-location-table').find('#admin-suggest-map').remove();
+        g = document.createElement('div');
+        g.setAttribute("id", "admin-suggest-map");
+        $('.admin-suggest-item-map-wrap').append(g);
+    });
+
+
+    $('.suggest-item-apply').click(function () {
+        suggestedItemToAccept = $(this).parents('.admin-panel-suggest-item');
+        suggestedId = suggestedItemToAccept.attr('id');
+        $.get("/Admin/Accept/" + suggestedId, function (response) {
+            if (response.result == "success") {
+                suggestedItemToAccept.remove();
+                CheckSuggestListEmpty();
+            }
+        });
+    });
+
+    $('.suggest-item-decline').click(function () {
+        suggestedItemToDecline = $(this).parents('.admin-panel-suggest-item');
+        suggestedId = suggestedItemToDecline.attr('id');
+        $.get("/Admin/Decline/" + suggestedId, function (response) {
+            if (response.result == "success") {
+                suggestedItemToDecline.remove();
+                CheckSuggestListEmpty();
+            }
+        });
+    });
+
+    function CheckSuggestListEmpty() {
+        if ($('.admin-panel-suggest-item').length == 0) {
+            g = document.createElement('div');
+            g.setAttribute("class", "admin-panel-suggest-empty");
+            g.innerText = "Добавленной пользователями информации нет.";
+            $('.admin-panel-suggest-list').append(g);    
+        }
+    }
+ 
+    /* /Панель администратора */
 
 });
