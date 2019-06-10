@@ -205,7 +205,8 @@ $(document).ready(function(){
                             </div>
                          `;
                         $('.create-event-form-close').click();
-                        $('.object-events').not('.hidden').children('.object-events-list').append(htmlToAppend);
+                        $('.object-events').not('.hidden').find('.object-events-list').append(htmlToAppend);
+                        $('.object-events-header').text("Ближайшие события на площадке");
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         console.log(xhr.status);

@@ -12,8 +12,8 @@
             map = DG.map('map', {
                 center: [55.741216, 37.620921], // центр Москвы,
                 maxBounds: [
-                    [55.566355, 37.314646],
-                    [55.950471, 37.934649]
+                    [55.466223, 37.142473],
+                    [56.011523, 38.054033]
                 ],
                 zoom: 11, // оптимальный зум для отображения всей Москвы при загрузке
                 zoomControl: false,
@@ -139,7 +139,7 @@
                                                 eventsHtml += `</div>`;
                                             }
                                             else {
-                                                eventsHtml = '<div class="object-events-header">Ближайших событий на площадке нет</div>';
+                                                eventsHtml = '<div class="object-events-header">Ближайших событий на площадке нет</div><div class="object-events-list"></div>';
                                             }
 
                                             $('.object-events').prepend(eventsHtml);
