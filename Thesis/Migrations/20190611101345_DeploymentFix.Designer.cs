@@ -10,8 +10,8 @@ using Thesis.Data;
 namespace Thesis.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190531165351_UserObjectFix")]
-    partial class UserObjectFix
+    [Migration("20190611101345_DeploymentFix")]
+    partial class DeploymentFix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

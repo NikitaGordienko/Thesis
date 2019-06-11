@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Thesis.Migrations
 {
-    public partial class UserObjectFixx : Migration
+    public partial class DeploymentFix : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
