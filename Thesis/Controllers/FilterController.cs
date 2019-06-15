@@ -50,7 +50,7 @@ namespace Thesis.Controllers
                 obj.Photo = context.Files.First(t => t.Id == obj.PhotoId);
             }
 
-            var objListPaged = objList.AsQueryable().GetPaged(page, 3);
+            var objListPaged = objList.AsQueryable().GetPaged(page, 25);
 
             ViewData["filtered"] = false;
             return View(objListPaged);

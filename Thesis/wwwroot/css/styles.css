@@ -421,6 +421,7 @@ footer.footer.blurry {
     width: 200px;
     margin: auto;
     margin-top: 20px;
+    margin-bottom: 70px;
     text-align: center;
     font-size: 18px;
     letter-spacing: 1px;
@@ -539,6 +540,10 @@ footer.footer.blurry {
     white-space: nowrap;
 }
 
+.search-result-address-district:hover {
+    overflow: inherit;
+}
+
 .search-result-address-district:before {
     position: absolute;
     left: 0;
@@ -575,6 +580,11 @@ footer.footer.blurry {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+}
+
+.search-result-item-terrain:hover,
+.search-result-item-light:hover {
+    overflow: inherit;
 }
 
 .search-result-item-terrain span,
@@ -654,7 +664,12 @@ footer.footer.blurry {
     }*/
 
 .search-pagination {
-    display: flex;
+    /*display: flex;*/
+}
+
+.search-pagination li {
+    float: left;
+    margin-bottom: 10px;
 }
 
 .pagination-page {
