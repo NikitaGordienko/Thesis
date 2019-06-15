@@ -1271,7 +1271,7 @@ main.auth {
 }
 
 .object-info-type {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
     max-height: 56px;
     overflow: hidden;

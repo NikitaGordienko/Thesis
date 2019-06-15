@@ -610,28 +610,28 @@ $(document).ready(function(){
 
     /* viewport с телефона */
 
-    CheckDevice();
+    //CheckDevice();
 
-    function CheckDevice() {
-        if ($(window).width() < 1280) {
-            $('header, main, footer').hide();
-            if ($('.mobile-warning').length == 0) {
-                warning = document.createElement('div');
-                warning.setAttribute("class", "mobile-warning");
-                warning.innerText = "Сайт не работает на устройствах с шириной экрана менее 1280 пикселей :)";
-                $('body').append(warning);
-            }
+    //function CheckDevice() {
+    //    if ($(window).width() < 1280) {
+    //        $('header, main, footer').hide();
+    //        if ($('.mobile-warning').length == 0) {
+    //            warning = document.createElement('div');
+    //            warning.setAttribute("class", "mobile-warning");
+    //            warning.innerText = "Сайт не работает на устройствах с шириной экрана менее 1280 пикселей :)";
+    //            $('body').append(warning);
+    //        }
 
-        }
-        else {
-            $('.mobile-warning').remove();
-            $('header, main, footer').show();
-        }
-    }
+    //    }
+    //    else {
+    //        $('.mobile-warning').remove();
+    //        $('header, main, footer').show();
+    //    }
+    //}
 
-    $(window).resize(function () {
-        CheckDevice();
-    });
+    //$(window).resize(function () {
+    //    CheckDevice();
+    //});
     /* /viewport с телефона */
 
 });
